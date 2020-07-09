@@ -1,7 +1,1 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Trail.create({"id"=>1, "hiking_project_id"=>7011192, "name"=>"Boulder Skyline Traverse", "trail_type"=>"Recommended Route", "summary"=>"The classic long mountain route in Boulder.", "difficulty"=>"black", "stars"=>4.7, "starVotes"=>85, "location"=>"Superior, Colorado", "url"=>"https://www.hikingproject.com/trail/7011192/boulder-skyline-traverse", "imgSqSmall"=>"https://cdn2.apstatic.com/photos/hike/7048859_sqsmall_1555540136.jpg", "imgSmall"=>"https://cdn2.apstatic.com/photos/hike/7048859_small_1555540136.jpg", "imgSmallMed"=>"https://cdn2.apstatic.com/photos/hike/7048859_smallMed_1555540136.jpg", "imgMedium"=>"https://cdn2.apstatic.com/photos/hike/7048859_medium_1555540136.jpg", "length"=>16.3, "ascent"=>5409, "descent"=>-5492, "high"=>8492, "low"=>5417, "longitude"=>105.2582, "latitude"=>39.9388, "conditionStatus"=>"All Clear", "conditionDetails"=>"Dry", "conditionDate"=>"Sat, 20 Jun 2020", "features"=>nil, "overview"=>nil, "description"=>nil, "created_at"=>"Thu, 09 Jul 2020 22:08:54 UTC +00:00", "updated_at"=>"Thu, 09 Jul 2020 22:08:54 UTC +00:00" })

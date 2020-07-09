@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2020_07_09_200137) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "trails", force: :cascade do |t|
     t.integer "hiking_project_id"
     t.string "name"
