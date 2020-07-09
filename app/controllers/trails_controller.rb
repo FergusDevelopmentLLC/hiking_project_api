@@ -4,7 +4,6 @@ class TrailsController < ApplicationController
   # GET /trails
   def index
     @trails = Trail.all
-
     render json: @trails
   end
 
@@ -36,6 +35,11 @@ class TrailsController < ApplicationController
   # DELETE /trails/1
   def destroy
     @trail.destroy
+  end
+
+  def for_coords
+    @trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude])
+    render json: @trails
   end
 
   private
