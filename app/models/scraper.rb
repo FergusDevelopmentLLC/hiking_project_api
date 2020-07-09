@@ -1,30 +1,38 @@
-class HikingProjectCli::Scraper
+class Scraper
 
-    def self.get_trails_from_api(coords)
+    def self.get_trails_from_api(latitude:, longitude:)
         
-        #returns an array of trail hashes
+        url = "https://www.hikingproject.com/data/get-trails?lat=#{latitude}&lon=#{longitude}&maxDistance=10&key=#{ENV['HIKINGPROJECT_API_KEY']}"
         
-        #coords = "lat=40.0274&lon=-105.2519"
-        #coords = "lat=28.539358&lon=-81.398444"
-
-        url = "https://www.hikingproject.com/data/get-trails?#{coords}&maxDistance=10&key=#{ENV['HIKINGPROJECT_API_KEY']}"
         uri = URI(url)
+
         response = Net::HTTP.get(uri)
+
         api_trails = JSON.parse(response)
 
         api_trails["trails"].map {|trail|
-            {
+            {   
+                :hiking_project_id => trail["id"],
                 :name => trail["name"],
+                :trail_type => trail["type"],
                 :length => trail["length"],
                 :summary => trail["summary"],
-                :url => trail["url"],
+                :stars => trail["stars"],
+                :starVotes => trail["starVotes"],
                 :location => trail["location"],
+                :imgSqSmall => trail["imgSqSmall"],
+                :imgSmall => trail["imgSmall"],
+                :imgSmallMed => trail["imgSmallMed"],
+                :imgMedium => trail["imgMedium"],
                 :difficulty => trail["difficulty"],
                 :stars => trail["stars"],
                 :ascent => trail["ascent"],
                 :descent => trail["descent"],
                 :high => trail["high"],
                 :low => trail["low"],
+                :longitude => trail["longitude"],
+                :latitude => trail["latitude"],
+                :url => trail["url"],
                 :conditionStatus => trail["conditionStatus"],
                 :conditionDetails => trail["conditionDetails"],
                 :conditionDate => trail["conditionDate"]

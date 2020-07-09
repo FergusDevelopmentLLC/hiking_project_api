@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  get 'trails/:latitude/:longitude', to: 'trails#for_coords', constraints: { :latitude => /[^\/]+/, :longitude => /[^\/]+/ }
+
   resources :trails
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
