@@ -1,6 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  hiking_project_id: 1
   name: MyString
   trail_type: MyString
   summary: MyString
@@ -28,6 +29,7 @@ one:
   description: MyString
 
 two:
+  hiking_project_id: 1
   name: MyString
   trail_type: MyString
   summary: MyString
