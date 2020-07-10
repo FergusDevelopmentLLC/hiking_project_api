@@ -1,8 +1,8 @@
 class Scraper
 
-    def self.get_trails_from_api(latitude:, longitude:)
+    def self.get_trails_from_api(latitude:, longitude:, max_distance:, max_results:)
         
-        url = "https://www.hikingproject.com/data/get-trails?lat=#{latitude}&lon=#{longitude}&maxDistance=10&key=#{ENV['HIKINGPROJECT_API_KEY']}"
+        url = "https://www.hikingproject.com/data/get-trails?lat=#{latitude}&lon=#{longitude}&maxDistance=#{max_distance}&maxResults=#{max_results}&key=#{ENV['HIKINGPROJECT_API_KEY']}"
         
         uri = URI(url)
 

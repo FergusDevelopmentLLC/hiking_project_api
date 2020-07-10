@@ -39,7 +39,7 @@ class TrailsController < ApplicationController
 
   def for_coords
     #test
-    @trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude])
+    @trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: params[:max_results])
     render json: @trails
   end
 
