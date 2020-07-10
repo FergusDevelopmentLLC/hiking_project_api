@@ -17,6 +17,11 @@ task :make_seeds do
     seedfile.write "Trail.create(#{trail.attributes})\n"
   end
 
+  cities = City.all
+  cities.each do |city|
+    seedfile.write "City.create(#{city.attributes})\n"
+  end
+
   seedfile.close
 
   text = File.read('db/seeds_new.rb')
