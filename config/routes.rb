@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :cities
   resources :trails
 
   # this goes to the api
