@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :cities_trails
   resources :cities
   resources :trails
 
