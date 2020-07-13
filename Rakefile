@@ -12,15 +12,15 @@ task :make_seeds do
   
   seedfile = File.open('db/seeds_new.rb', 'a')
   
-  # trails = Trail.all
-  # trails.each do |trail|
-  #   seedfile.write "Trail.create(#{trail.attributes})\n"
-  # end
+  cities = City.all
+  cities.each do |city|
+    seedfile.write "City.create(#{city.attributes})\n"
+  end
 
-  # cities = City.all
-  # cities.each do |city|
-  #   seedfile.write "City.create(#{city.attributes})\n"
-  # end
+  trails = Trail.all
+  trails.each do |trail|
+    seedfile.write "Trail.create(#{trail.attributes})\n"
+  end
 
   cities_trails = CitiesTrail.all
   cities_trails.each do |ct|
