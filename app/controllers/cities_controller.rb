@@ -41,11 +41,15 @@ class CitiesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_city
-      @city = City.find(params[:id])
+      if params[:slug] && params[:state_abbrev]
+        @city = City.where('lower(slug) = ? and lower(state_abbrev) = ?', params[:slug], params[:state_abbrev]).first 
+      else
+        @city = City.find(params[:id])
+      end
     end
 
     # Only allow a trusted parameter "white list" through.
     def city_params
-      params.require(:city).permit(:name, :state, :country, :latitude, :longitude, :timezone, :population)
+      params.require(:city).permit(:name, :state, :country, :latitude, :longitude, :timezone, :population, :slug, :state_abbrev)
     end
 end

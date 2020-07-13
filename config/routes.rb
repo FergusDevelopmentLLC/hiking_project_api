@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
 
   resources :cities_trails
+
+  get 'cities/:slug/:state_abbrev', to: 'cities#show'
   resources :cities
+
+  get 'cities/:slug/:state_abbrev/trails', to: 'trails#for_city'
   resources :trails
 
   # this goes to the api
