@@ -56,8 +56,8 @@ task :make_seeds do
   new_contents = new_contents.gsub(/\"name\"=>"Road 2000,/, '"name"=>"Road 2000",')
   new_contents = new_contents.gsub(/\/road-2000,/, '/road-2000",')
   new_contents = new_contents.gsub(/\"descent\"=>-2020\",/, '"descent"=>-2020,')
-  new_contents = new_contents.gsub(/2020, \"features\"/, '2020", "features"')
-  
+  new_contents = new_contents.gsub(/0, \"features\"/, '0", "features"')
+
   new_contents = new_contents.gsub(/\+00:00,/, '+00:00",')
   new_contents = new_contents.gsub(/\+00:00\}\)/, '+00:00" })')
   
