@@ -37,6 +37,20 @@ class TrailsController < ApplicationController
     @trail.destroy
   end
 
+  def for_city
+    @trails = []
+    city = City.where('lower(slug) = ?', params[:slug]).first
+
+    if city
+      # TODO: redo this better
+      city_trails = CitiesTrail.where('city_id = ?', city.id)
+      city_trails.each {|city_trail|
+        @trails.push(Trail.find(city_trail.trail_id))
+      }
+    end
+    render json: @trails
+  end
+
   def for_coords
     #test
     @trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: params[:max_results])

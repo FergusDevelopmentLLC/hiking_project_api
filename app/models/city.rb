@@ -1,7 +1,10 @@
 class City < ApplicationRecord
-
-    after_validation :set_slug, only: [:create, :update]
     has_and_belongs_to_many :trails
+    after_validation :set_slug, only: [:create, :update]
+    
+    def to_param
+        "#{id}-#{slug}"
+    end
 
     private
 
