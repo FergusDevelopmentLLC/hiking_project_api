@@ -61,8 +61,6 @@ task :make_seeds do
   new_contents = new_contents.gsub(/\+00:00,/, '+00:00",')
   new_contents = new_contents.gsub(/\+00:00\}\)/, '+00:00" })')
   
-  
-
   #new_contents = new_contents.gsub(/2000\",/, '2000,')
   #new_contents = new_contents.gsub(/2020\",/, '2020,')
   # new_contents = new_contents.gsub(/2000,/, '2000",')
@@ -71,8 +69,6 @@ task :make_seeds do
   File.open('db/seeds_new.rb', "w") { |file| file.puts new_contents }
 
   #https://stackoverflow.com/questions/27431532/why-am-i-getting-uninitialized-constant-for-a-rake-task-rails-4-1-8
-
-  #bundle exec rake environment make_seeds
 
 end
 
@@ -148,3 +144,24 @@ task :populate_city_slugs do
 
   #bundle exec rake environment populate_city_slugs
 end
+
+desc 'populate_db'
+task :populate_db do
+
+  #file='db/migrate/save/cities.rb.seeds.txt'
+  # file='db/migrate/save/trails.rb.seeds.txt'
+  # file='db/migrate/save/cities_trails.rb.seeds.txt'
+  file='db/seeds_new.rb'
+  
+  f = File.open(file, "r")
+  f.each_line { |line|
+    puts "Executing:" + line
+    eval(line)
+    #puts "sleeping 5 secs"
+    #sleep 15
+  }
+  f.close
+
+  #bundle exec rake environment populate_db
+end
+
