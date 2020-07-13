@@ -32,3 +32,8 @@
 /config/master.key
 notes.txt
 .env
+
+/db/migrate/save/*
+/db/migrate/old/*
+
+/db/seeds.rb
