@@ -151,7 +151,7 @@ task :populate_db do
   #file='db/migrate/save/cities.rb.seeds.txt'
   # file='db/migrate/save/trails.rb.seeds.txt'
   # file='db/migrate/save/cities_trails.rb.seeds.txt'
-  file='db/seeds_new.rb'
+  file='db/seeds.txt'
   
   f = File.open(file, "r")
   f.each_line { |line|
