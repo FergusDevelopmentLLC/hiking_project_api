@@ -34,12 +34,10 @@ task :make_seeds do
   new_contents = text.gsub(/\"created_at\"=>/, '"created_at"=>"')
   new_contents = new_contents.gsub(/\"updated_at\"=>/, '"updated_at"=>"')
   new_contents = new_contents.gsub(/\"conditionDate\"=>/, '"conditionDate"=>"')
-  new_contents = new_contents.gsub(/2000\",/, '2000,')
-  new_contents = new_contents.gsub(/2020\",/, '2020,')
+  new_contents = new_contents.gsub(/\"population\"=>82000\",/, '"population"=>82000,')
   new_contents = new_contents.gsub(/2020\", (at least...for COVID)."/, '2020, (at least...for COVID)."')
   new_contents = new_contents.gsub(/area\'s/, 'area\'s')
   new_contents = new_contents.gsub(/in\'s/, 'in\'s')
-  
   new_contents = new_contents.gsub(/Brian\'s Hill/, 'Brian\'s Hill')
   new_contents = new_contents.gsub(/\"high\"=>2020\",/, '"high"=>2020,')
   new_contents = new_contents.gsub(/\"low\"=>2020\",/, '"low"=>2020,')
@@ -58,12 +56,17 @@ task :make_seeds do
   new_contents = new_contents.gsub(/\"name\"=>"Road 2000,/, '"name"=>"Road 2000",')
   new_contents = new_contents.gsub(/\/road-2000,/, '/road-2000",')
   new_contents = new_contents.gsub(/\"descent\"=>-2020\",/, '"descent"=>-2020,')
+  new_contents = new_contents.gsub(/2020, \"features\"/, '2020", "features"')
+  
+  new_contents = new_contents.gsub(/\+00:00,/, '+00:00",')
+  new_contents = new_contents.gsub(/\+00:00\}\)/, '+00:00" })')
+  
   
 
-  new_contents = new_contents.gsub(/\+00:00,/, '+00:00",')
-  new_contents = new_contents.gsub(/2000,/, '2000",')
-  new_contents = new_contents.gsub(/2020,/, '2020",')
-  new_contents = new_contents.gsub(/\+00:00\}\)/, '+00:00" })')
+  #new_contents = new_contents.gsub(/2000\",/, '2000,')
+  #new_contents = new_contents.gsub(/2020\",/, '2020,')
+  # new_contents = new_contents.gsub(/2000,/, '2000",')
+  # new_contents = new_contents.gsub(/2020,/, '2020",')
   
   File.open('db/seeds_new.rb', "w") { |file| file.puts new_contents }
 
