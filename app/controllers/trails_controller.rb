@@ -43,9 +43,13 @@ class TrailsController < ApplicationController
 
     if city
       # TODO: redo this better
-      city_trails = CitiesTrail.where('city_id = ?', city.id)
+      city_trails = CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc })
       city_trails.each {|city_trail|
-        @trails.push(Trail.find(city_trail.trail_id))
+        trail = Trail.find(city_trail.trail_id)
+        trail_hash = trail.attributes
+        trail_hash['distance_meters'] = city_trail.distance
+        trail_hash['distance_miles'] = city_trail.distance * 0.000621371
+        @trails.push(trail_hash)
       }
     end
     render json: @trails

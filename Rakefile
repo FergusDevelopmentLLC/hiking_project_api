@@ -165,3 +165,21 @@ task :populate_db do
   #bundle exec rake environment populate_db
 end
 
+
+desc 'populate_distance'
+task :populate_distance do
+  CitiesTrail.all.each {|city_trail|
+    puts city_trail.city.longitude
+    puts city_trail.city.latitude
+    puts city_trail.trail.longitude
+    puts city_trail.trail.latitude
+    
+    city_trail.distance = Geodesics.distance(city_trail.city.latitude, city_trail.city.longitude, city_trail.trail.latitude, city_trail.trail.longitude)
+    city_trail.save()
+    
+    puts "trail distance saved."
+    puts "------------------------"
+  }
+  #bundle exec rake environment populate_distance
+end
+
