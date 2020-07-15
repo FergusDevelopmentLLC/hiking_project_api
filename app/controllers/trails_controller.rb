@@ -38,12 +38,21 @@ class TrailsController < ApplicationController
   end
 
   def for_city
+    
     @trails = []
-    city = City.where('lower(slug) = ?', params[:slug]).first
 
+    # city = City.where('lower(slug) = ?', params[:slug]).first
+    city = City.where(["lower(slug) = ? and lower(state_abbrev) = ?", params[:slug], params[:state_abbrev]]).first
+    
     if city
+    
       # TODO: redo this better
-      city_trails = CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc })
+      city_trails = if params[:limit]
+                      CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc }).limit(params[:limit].to_i)
+                    else
+                      CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc })
+                    end
+
       city_trails.each {|city_trail|
         trail = Trail.find(city_trail.trail_id)
         trail_hash = trail.attributes
@@ -52,6 +61,7 @@ class TrailsController < ApplicationController
         @trails.push(trail_hash)
       }
     end
+
     render json: @trails
   end
 
