@@ -74,15 +74,20 @@ end
 
 desc 'Populate trails for cities'
 task :populate_trails_for_cities do
+
+  # base_url = "https://hiking-project-api.herokuapp.com"
+  base_url = "http://127.0.0.1:3000"
   
   cities = City.all
 
   cities.each do |city|
     
-    if(city.id > 300)
+    # Denver = 5
+    if(city.id === 5)
       puts "starting"
 
-      url = "https://hiking-project-api.herokuapp.com/trails/#{city.latitude}/#{city.longitude}/25/500"
+      url = "#{base_url}/trails/#{city.latitude}/#{city.longitude}/25/500"
+
       puts url
       
       response = HTTParty.get(url)
@@ -168,7 +173,9 @@ end
 
 desc 'populate_distance'
 task :populate_distance do
-  CitiesTrail.all.each {|city_trail|
+  # CitiesTrail.all.each {|city_trail|
+
+  CitiesTrail.where(distance: nil).each {|city_trail|
     puts city_trail.city.longitude
     puts city_trail.city.latitude
     puts city_trail.trail.longitude
