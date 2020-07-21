@@ -1,18 +1,24 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: hiking_project_api
+  pool: 5
+  username: hiking_project_api
+  password: horsefly32
+
 development:
   adapter: postgresql
   encoding: unicode
-  database: hiking_project
-  pool: 2
-  username: geodevdb
-  password: admin123
-  host: localhost
-  port: 5432
+  database: hiking_project_api
+  pool: 5
+  username: hiking_project_api
+  password: horsefly32
 
 production:
   adapter: postgresql
   encoding: unicode
+  database: hiking_project_api
+  host: localhost
   pool: 5
-  host: <%= ENV['DATABASE_HOST'] %>
-  database: <%= ENV['DATABASE_NAME'] %>
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  username: hiking_project_api
+  password: horsefly32
