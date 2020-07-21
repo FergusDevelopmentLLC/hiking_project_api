@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Find Hiking Trails</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="iconify.min.js"></script>
+  <script src="parameterize.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="spinner.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    #search {
+      display: block;
+      position: absolute;
+      right: 0;
+      width: 20rem;
+      padding: 0;
+      border-left: 1px solid lightgray;
+      border-bottom: 1px solid lightgray;
+      border-radius: 3px;
+      font-size: 12px;
+      color: #222;
+      background: #fff;
+    }
+
+    #search-form {
+      margin-top: .2rem;
+      display: flex;
+      flex-direction: row;
+    }
+
+    #modal {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 20rem;
+      padding: 1rem;
+      border-right: 1px solid lightgray;
+      border-bottom: 1px solid lightgray;
+      border-radius: .2rem;
+      font-size: 1rem;
+      color: #222;
+      background: #fff;
+    }
+
+    h1 {
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    ol {
+      margin: 0;
+      padding: .5rem 0 0 1.5rem;
+    }
+
+    ol li {
+      font-size: .9rem;
+      padding: 0 0 .4rem 0;
+    }
+
+    #close {
+      float: right;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    #close a {
+      text-decoration: none;
+      color: #000;
+    }
+
+    .iconify {
+      width: 1rem;
+      height: 1rem;
+      margin: .8rem .4rem;
+    }
+
+    input {
+      margin: .5rem 0 .5rem 0;
+      width: 16rem;
+      height: 1.4rem;
+    }
+
+    #search-title {
+      margin: .5rem 0 0 .5rem;
+    }
+
+    #search-subtitle {
+      margin: 0 .5rem .5rem .5rem;
+    }
+
+    #pointer {
+      display: none;
+    }
+
+    #pointer svg {
+      width: 1.2rem;
+      height: 1.05rem;
+    }
+
+    #crosshair {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="map"></div>
+  <div id="loading" class="loading" onClick="hideSpinner()">Loading&#8230;</div>
+  <div id="modal">
+    <div id="close"><a>X</a></div>
+  </div>
+  <div id="search">
+    <div id="search-title">Search by <strong>city, state</strong>:</div>
+    <form id="search-form" onkeydown="return event.key != 'Enter';">
+      <div><span class="iconify" data-icon="et-magnifying-glass" data-inline="false"></span></div>
+      <div><input type="text" id="input_search" placeholder="Boulder, CO" /></div>
+      <div id="mode-wrapper">
+        <div id="crosshair"><span class="iconify" data-icon="bx:bx-target-lock" data-inline="false"></span></div>
+        <div id="pointer"><span class="iconify" data-icon="vaadin:pointer" data-inline="false"></span></div>
+      </div>
+    </form>
+    <div id="search-subtitle"></div>
+  </div>
+
+  <script>
+
+    setCursors = () => {
+
+      let message;
+      if (cursorMode == 'pointer') {
+        document.getElementById('pointer').style.display = "none"
+        document.getElementById('crosshair').style.display = "block"
+        message = "Or, click the <strong>crosshair</strong> to search by specific location"
+      }
+      else {
+        document.getElementById('pointer').style.display = "block"
+        document.getElementById('crosshair').style.display = "none"
+        message = "Or, click the <strong>pointer</strong> to pan the map"
+      }
+      document.getElementById('search-subtitle').innerHTML = message
+    }
+
+    handlePopup = () => {
+
+      // Create a popup, but don't add it to the map yet.
+      let popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      })
+
+      map.on('mouseenter', 'points', function (e) {
+
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = 'pointer'
+
+        let coordinates = [e.features[0].properties.longitude, e.features[0].properties.latitude]
+
+        // Ensure that if the map is zoomed out such that multiple copies of the feature are visible, the popup appears over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+        }
+
+        let tooltip_msg = '<strong>Details</strong><br/>'
+
+        for (const feature of e.features) {
+          for (let [key, value] of Object.entries(feature.properties)) {
+            if (!`${key}`.includes('img') && !`${key}`.includes('url')) {
+              tooltip_msg += `${key}: ${value}<br/>`
+            }
+          }
+        }
+
+        // Populate the popup and set its coordinates based on the feature found.
+        popup.setLngLat(coordinates)
+          .setHTML(tooltip_msg)
+          .addTo(map);
+      });
+
+      map.on('mouseleave', 'points', function () {
+        map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
+    }
+
+    populateModal = (data, opts) => {
+
+      if (document.getElementById('trails_title')) {
+        document.getElementById('trails_title').remove()
+      }
+
+      if (document.getElementById('trails_ol')) {
+        document.getElementById('trails_ol').remove()
+      }
+
+      let title = document.createElement('h1');
+      title["id"] = "trails_title"
+
+      if (data.length > 0) {
+
+        if (opts["city"] && opts["state_abbrev"]) {
+          title.appendChild(document.createTextNode(`Trails for the city: ${opts["city"]}, ${opts["state_abbrev"].toUpperCase()}`))
+        }
+        else if (opts["latitude"] && opts["longitude"]) {
+          title.appendChild(document.createTextNode(`Trails for the coords: ${opts["latitude"].toFixed(2)}, ${opts["longitude"].toFixed(2)}`))
+        }
+
+        let list = document.createElement('ol');
+        list["id"] = "trails_ol"
+        data.forEach((trail) => {
+          let item = document.createElement('li')
+          item.innerHTML = `<a href='${trail["url"]}' target='_blank'>${trail["name"]}</a> - ${trail["location"]} - ${trail["summary"]}`
+          list.appendChild(item);
+        })
+        document.getElementById('modal').appendChild(title)
+        document.getElementById('modal').appendChild(list)
+      }
+      else {
+
+        if (opts["city"] && opts["state_abbrev"]) {
+          title.appendChild(document.createTextNode(`No trails found for: ${opts["city"]}, ${opts["state_abbrev"].toUpperCase()}`))
+        }
+        else if (opts["latitude"] && opts["longitude"]) {
+          title.appendChild(document.createTextNode(`Trails for the coords: ${opts["latitude"].toFixed(2)}, ${opts["longitude"].toFixed(2)}`))
+        }
+
+        document.getElementById('modal').appendChild(title)
+      }
+
+      document.getElementById('modal').style.display = "block"
+    }
+
+    addSource = (map, featureCollection) => {
+      map.addSource('points', {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': featureCollection
+        }
+      });
+    }
+
+    getFeatureCollection = (data) => {
+
+      var featureCollection = [];
+
+      if (data.length > 0) {
+        data.forEach(function (trail) {
+          coordinates = new Array()
+          coordinates.push(parseFloat(trail["longitude"]))
+          coordinates.push(parseFloat(trail["latitude"]))
+          featureCollection.push({
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": coordinates
+            },
+            "properties": {
+              "name": trail["name"],
+              "length": trail["length"],
+              "summary": trail["summary"],
+              "stars": trail["stars"],
+              "starVotes": trail["starVotes"],
+              "location": trail["location"],
+              "imgSqSmall": trail["imgSqSmall"],
+              "imgSmall": trail["imgSmall"],
+              "imgSmallMed": trail["imgSmallMed"],
+              "imgMedium": trail["imgMedium"],
+              "difficulty": trail["difficulty"],
+              "ascent": trail["ascent"],
+              "descent": trail["descent"],
+              "high": trail["high"],
+              "low": trail["low"],
+              "longitude": trail["longitude"],
+              "latitude": trail["latitude"],
+              "url": trail["url"],
+              "conditionStatus": trail["conditionStatus"],
+              "conditionDetails": trail["conditionDetails"],
+              "conditionDate": trail["conditionDate"]
+            }
+          });
+        })
+      }
+
+      return featureCollection;
+    }
+
+    clearMapData = (map) => {
+      if (map.getLayer("points")) {
+        map.removeLayer("points");
+      }
+
+      if (map.getSource("points")) {
+        map.removeSource("points");
+      }
+    }
+
+    addPointsLayer = (map) => {
+      map.addLayer({
+        'id': 'points',
+        'type': 'circle',
+        'source': 'points',
+        'paint': {
+          'circle-radius': 4,
+          'circle-color': '#0072ff'
+        }
+      })
+    }
+
+    // ============================================================
+    // ============================================================
+    // ============================================================
+
+    // get bounding box: http://bboxfinder.com
+    let mapBounds = [-125.903320, 24.726875, -66.621094, 49.639177]//Southwest corner, Northeast corner
+    let cursorMode = 'pointer'
+    const url_prefix = 'https://hiking-project-api.herokuapp.com'
+    //const url_prefix = 'http://127.0.0.1:3000'
+    
+    mapboxgl.accessToken = 'pk.eyJ1Ijoid2lsbGNhcnRlciIsImEiOiJjamV4b2g3Z2ExOGF4MzFwN3R1dHJ3d2J4In0.Ti-hnuBH8W4bHn7k6GCpGw';
+
+    let map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/outdoors-v11',
+      center: [(mapBounds[0] + mapBounds[2]) / 2, (mapBounds[1] + mapBounds[3]) / 2],
+      zoom: 3.99,
+      minZoom: 3.99
+    })
+
+    map.on('click', async (e) => {
+      if (cursorMode == 'crosshair') {
+        document.getElementById('loading').style.visibility = 'visible';
+        let lng = e.lngLat.lng
+        let lat = e.lngLat.lat
+        let api_url = `${url_prefix}/trails/${lat}/${lng}/25/15`
+        let data = await fetch(api_url).then(r => r.json())
+        populateModal(data, { "latitude": lat, "longitude": lng })
+        clearMapData(map)
+        addSource(map, getFeatureCollection(data))
+        addPointsLayer(map)
+        map.flyTo({ center: [lng, lat], essential: true, zoom: 10 })
+        document.getElementById('loading').style.visibility = 'hidden';
+      }
+    })
+
+    map.on('load', function () {
+      handlePopup()
+    })
+
+    map.on('mouseover', function (e) {
+      map.getCanvas().style.cursor = cursorMode
+    })
+
+    map.on('mouseout', function (e) {
+      map.getCanvas().style.cursor = "default"
+    })
+
+    document.getElementById("pointer").onclick = function () {
+      cursorMode = 'pointer'
+      document.getElementById('pointer').style.display = "none"
+      document.getElementById('crosshair').style.display = "block"
+      setCursors()
+    }
+
+    document.getElementById("crosshair").onclick = function () {
+      cursorMode = 'crosshair'
+      document.getElementById('pointer').style.display = "block"
+      document.getElementById('crosshair').style.display = "none"
+      setCursors()
+    }
+
+    document.getElementById('close').onclick = function () {
+      document.getElementById('modal').style.display = "none"
+    }
+
+    document.getElementById("input_search").addEventListener("keyup", async function (event) {
+      event.preventDefault()
+      if (event.keyCode === 13) {
+        document.getElementById('loading').style.visibility = 'visible';
+        let search_value = document.getElementById("input_search").value
+        let search_value_arr = search_value.split(',')
+        if (search_value_arr.length > 0) {
+          let city_raw = search_value_arr[0].trim();
+          let city_urlified = URLify(city_raw.toLowerCase())
+          let state_abbrev = search_value_arr[1].trim().toLowerCase()
+          let api_url = `${url_prefix}/cities/${city_urlified}/${state_abbrev}/trails?limit=15`
+          let data = await fetch(api_url).then(r => r.json())
+          
+          populateModal(data, { "city": city_raw, "state_abbrev": state_abbrev })
+          clearMapData(map)
+          addSource(map, getFeatureCollection(data))
+          addPointsLayer(map)
+
+          if (data.length > 0) map.flyTo({ center: [data[0]['longitude'], data[0]['latitude']], essential: true, zoom: 10 })
+          
+          document.getElementById("input_search").value = ''
+        }
+        document.getElementById('loading').style.visibility = 'hidden';
+      }
+    })
+
+    setCursors()
+
+  </script>
+
+</body>
+
+</html>
