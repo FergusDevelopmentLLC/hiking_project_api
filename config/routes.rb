@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get '/hiking_project', to: redirect('/index.html')
+
   resources :cities_trails
 
   get 'cities/:slug/:state_abbrev', to: 'cities#show'
