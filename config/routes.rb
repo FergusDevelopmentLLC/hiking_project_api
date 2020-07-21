@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get '/hiking_project', to: redirect('/index.html')
+  get '/hiking_project', to: redirect('/map/index.html')
 
   resources :cities_trails
 
