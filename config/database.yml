@@ -20,5 +20,5 @@ production:
   database: hiking_project_api
   host: localhost
   pool: 5
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  username: hiking_project_api
+  password: wcpStBFgS
