@@ -23,7 +23,6 @@ class Scraper
           :imgSmallMed => trail["imgSmallMed"],
           :imgMedium => trail["imgMedium"],
           :difficulty => trail["difficulty"],
-          :stars => trail["stars"],
           :ascent => trail["ascent"],
           :descent => trail["descent"],
           :high => trail["high"],
