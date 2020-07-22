@@ -75,16 +75,16 @@ end
 desc 'Populate trails for cities'
 task :populate_trails_for_cities do
 
-  # base_url = "https://hiking-project-api.herokuapp.com"
-  base_url = "http://127.0.0.1:3000"
+  # base_url = "http://127.0.0.1:3000"
+  base_url = "http://138.68.23.63:3000/"
   
   # cities = City.all
-  cities = City.where("population > ?", 4999)
+  cities = City.where("population > ?", 4999).order('population DESC')
   
   cities.each do |city|
     
     # Denver = 5
-    if(city.id === 5)
+    #if(city.id === 5)
       puts "starting"
 
       url = "#{base_url}/trails/#{city.latitude}/#{city.longitude}/5/15"
@@ -129,9 +129,9 @@ task :populate_trails_for_cities do
         puts "#{city.id}: trail city relationship saved for city: #{city.name}"
       }
       
-      puts "sleeping 15 secs"
-      sleep 15
-    end
+      puts "sleeping 5 secs"
+      sleep 5
+    #end
 
   end
 
