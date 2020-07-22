@@ -78,15 +78,16 @@ task :populate_trails_for_cities do
   # base_url = "https://hiking-project-api.herokuapp.com"
   base_url = "http://127.0.0.1:3000"
   
-  cities = City.all
-
+  # cities = City.all
+  cities = City.where("population > ?", 4999)
+  
   cities.each do |city|
     
     # Denver = 5
     if(city.id === 5)
       puts "starting"
 
-      url = "#{base_url}/trails/#{city.latitude}/#{city.longitude}/25/500"
+      url = "#{base_url}/trails/#{city.latitude}/#{city.longitude}/5/15"
 
       puts url
       
@@ -134,7 +135,7 @@ task :populate_trails_for_cities do
 
   end
 
-  #bundle exec rake environment populate_trails_for_cities
+  #RAILS_ENV=development bundle exec rake environment populate_trails_for_cities
 end
 
 desc 'Populate city slugs'
@@ -142,12 +143,16 @@ task :populate_city_slugs do
 
   cities = City.all
   cities.each do |city|
-    city.slug = city.name.to_s.parameterize
-    city.save()
-    puts "#{city.name} slug #{city.slug} saved."
+    if city.slug.blank?
+      city.slug = city.name.to_s.parameterize
+      city.save()
+      puts "#{city.name} slug #{city.slug} saved."
+    end
+    puts "#{city.name} slug #{city.slug} skipped."
   end
 
   #bundle exec rake environment populate_city_slugs
+  #RAILS_ENV=development bundle exec rake environment populate_city_slugs
 end
 
 desc 'populate_db'
@@ -167,7 +172,7 @@ task :populate_db do
   }
   f.close
 
-  #bundle exec rake environment populate_db
+  #RAILS_ENV=development bundle exec rake environment populate_db
 end
 
 
@@ -187,6 +192,6 @@ task :populate_distance do
     puts "trail distance saved."
     puts "------------------------"
   }
-  #bundle exec rake environment populate_distance
+  #RAILS_ENV=development bundle exec rake environment populate_distance
 end
 

@@ -42,42 +42,54 @@ class TrailsController < ApplicationController
     @trails = []
 
     # city = City.where('lower(slug) = ?', params[:slug]).first
+    
     city = City.where(["lower(slug) = ? and lower(state_abbrev) = ?", params[:slug], params[:state_abbrev]]).first
-    
+
     if city
-    
+      
       # TODO: redo this better
       city_trails = if params[:limit]
                       CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc }).limit(params[:limit].to_i)
                     else
                       CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc })
                     end
-
+      
       city_trails.each {|city_trail|
         trail = Trail.find(city_trail.trail_id)
         trail_hash = trail.attributes
-        trail_hash['distance_meters'] = city_trail.distance
-        trail_hash['distance_miles'] = city_trail.distance * 0.000621371
         @trails.push(trail_hash)
       }
+      
+      # city_trails.each {|city_trail|
+      #   trail = Trail.find(city_trail.trail_id)
+      #   trail_hash = trail.attributes
+      #   trail_hash['distance_meters'] = city_trail.distance
+      #   trail_hash['distance_miles'] = city_trail.distance * 0.000621371
+      #   @trails.push(trail_hash)
+      # }
+
     end
 
     render json: @trails
   end
 
   def for_coords
-    all_trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: 500)
-    all_trails_array = []
-    
-    all_trails.each {|trail_hash|
-      distance = Geodesics.distance(params[:latitude].to_f, params[:longitude].to_f, trail_hash[:latitude].to_f, trail_hash[:longitude].to_f)
-      trail_hash[:distance_meters] = distance
-      trail_hash[:distance_miles] = distance * 0.000621371
-      all_trails_array.push(trail_hash)
-    }
 
-    all_trails_array = all_trails_array.sort_by { |trail| trail[:distance_meters] }
-    @trails = all_trails_array[0 ... params[:max_results].to_i]
+    # all_trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: 500)
+    # all_trails_array = []
+    
+    # all_trails.each {|trail_hash|
+    #   distance = Geodesics.distance(params[:latitude].to_f, params[:longitude].to_f, trail_hash[:latitude].to_f, trail_hash[:longitude].to_f)
+    #   trail_hash[:distance_meters] = distance
+    #   trail_hash[:distance_miles] = distance * 0.000621371
+    #   all_trails_array.push(trail_hash)
+    # }
+
+    # all_trails_array = all_trails_array.sort_by { |trail| trail[:distance_meters] }
+    # @trails = all_trails_array[0 ... params[:max_results].to_i]
+    
+    @trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: params[:max_results])
+
     render json: @trails
   end
 
