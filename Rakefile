@@ -82,7 +82,6 @@ task :populate_trails_for_cities do
   # https://stackoverflow.com/questions/2316475/how-do-i-return-early-from-a-rake-task
 
   base_url = "http://127.0.0.1:3000"
-  #base_url = "http://138.68.23.63:3000"
   
   # cities = City.all
   cities = City.where("population > ? and population < 5229", 4999).order('population DESC')
