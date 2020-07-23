@@ -75,14 +75,22 @@ end
 desc 'Populate trails for cities'
 task :populate_trails_for_cities do
 
-  # base_url = "http://127.0.0.1:3000"
-  base_url = "http://138.68.23.63:3000/"
+  # File.open("test.txt", "a") { |f| 
+  #   f.write "This is a test123"
+  # }
+  # abort 'Failed to proceed'
+  # https://stackoverflow.com/questions/2316475/how-do-i-return-early-from-a-rake-task
+
+  base_url = "http://127.0.0.1:3000"
+  #base_url = "http://138.68.23.63:3000"
   
   # cities = City.all
-  cities = City.where("population > ?", 4999).order('population DESC')
+  cities = City.where("population > ? and population < 5229", 4999).order('population DESC')
   
+  sleep_time = 0
+
   cities.each do |city|
-    
+      
     # Denver = 5
     #if(city.id === 5)
       puts "starting"
@@ -92,45 +100,61 @@ task :populate_trails_for_cities do
       puts url
       
       response = HTTParty.get(url)
+
+      puts "response.code: #{response.code}"
+
+      if response && response.code == 200
+
+        response.each_with_index { |trail, index| 
+          
+          t = Trail.find_or_create_by(
+            hiking_project_id: trail["hiking_project_id"],
+            name: trail["name"],
+            trail_type: trail["trail_type"],
+            summary: trail["summary"],
+            difficulty: trail["difficulty"],
+            stars: trail["stars"],
+            starVotes: trail["starVotes"],
+            location: trail["location"],
+            url: trail["url"],
+            imgSqSmall: trail["imgSqSmall"],
+            imgSmall: trail["imgSmall"],
+            imgSmallMed: trail["imgSmallMed"],
+            imgMedium: trail["imgMedium"],
+            length: trail["length"],
+            ascent: trail["ascent"],
+            descent: trail["descent"],
+            high: trail["high"],
+            low: trail["low"],
+            longitude: trail["longitude"],
+            latitude: trail["latitude"],
+            conditionStatus: trail["conditionStatus"],
+            conditionDetails: trail["conditionDetails"],
+            conditionDate: trail["conditionDate"],
+            features: trail["features"],
+            overview: trail["overview"],
+            description: trail["description"]
+          )
+          t.save()
+          puts "#{city.id}: trail saved: #{trail["name"]}"
+          cities_trail = CitiesTrail.find_or_create_by(city_id: city.id, trail_id: t.id)
+          cities_trail.save()
+          puts "#{city.id}: trail city relationship saved for city: #{city.name}, #{city.state_abbrev} (pop: #{city.population})"
+        }
+
+      else
+        puts "ERROR! ERROR! ERROR! ERROR! ERROR! ERROR! "
+        puts "api response.code #{response.code}"
+        puts "city #{city.name}, #{city.state_abbrev}"
+
+        File.open("error_log.txt", "a") { |f| 
+          f.write "api response.code: #{response.code}, city: #{city.name}, #{city.state_abbrev}\n"
+        }
+        abort 'Error'
+      end
       
-      response.each_with_index { |trail, index| 
-        t = Trail.find_or_create_by(
-          hiking_project_id: trail["hiking_project_id"],
-          name: trail["name"],
-          trail_type: trail["trail_type"],
-          summary: trail["summary"],
-          difficulty: trail["difficulty"],
-          stars: trail["stars"],
-          starVotes: trail["starVotes"],
-          location: trail["location"],
-          url: trail["url"],
-          imgSqSmall: trail["imgSqSmall"],
-          imgSmall: trail["imgSmall"],
-          imgSmallMed: trail["imgSmallMed"],
-          imgMedium: trail["imgMedium"],
-          length: trail["length"],
-          ascent: trail["ascent"],
-          descent: trail["descent"],
-          high: trail["high"],
-          low: trail["low"],
-          longitude: trail["longitude"],
-          latitude: trail["latitude"],
-          conditionStatus: trail["conditionStatus"],
-          conditionDetails: trail["conditionDetails"],
-          conditionDate: trail["conditionDate"],
-          features: trail["features"],
-          overview: trail["overview"],
-          description: trail["description"]
-        )
-        t.save()
-        puts "#{city.id}: trail saved: #{trail["name"]}"
-        cities_trail = CitiesTrail.find_or_create_by(city_id: city.id, trail_id: t.id)
-        cities_trail.save()
-        puts "#{city.id}: trail city relationship saved for city: #{city.name}"
-      }
-      
-      puts "sleeping 5 secs"
-      sleep 5
+      puts "sleeping #{sleep_time} secs"
+      sleep sleep_time
     #end
 
   end
@@ -147,11 +171,11 @@ task :populate_city_slugs do
       city.slug = city.name.to_s.parameterize
       city.save()
       puts "#{city.name} slug #{city.slug} saved."
+    else
+      puts "#{city.name} slug #{city.slug} skipped."
     end
-    puts "#{city.name} slug #{city.slug} skipped."
   end
 
-  #bundle exec rake environment populate_city_slugs
   #RAILS_ENV=development bundle exec rake environment populate_city_slugs
 end
 

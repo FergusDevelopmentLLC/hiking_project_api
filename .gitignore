@@ -49,3 +49,4 @@ yarn-debug.log*
 /bin/*
 
 secret.txt
+error_log.txt

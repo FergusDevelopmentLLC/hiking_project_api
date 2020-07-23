@@ -3,9 +3,17 @@ class Scraper
     def self.get_trails_from_api(latitude:, longitude:, max_distance:, max_results:)
         
       url = "https://www.hikingproject.com/data/get-trails?lat=#{latitude}&lon=#{longitude}&maxDistance=#{max_distance}&maxResults=#{max_results}&key=#{ENV['HIKINGPROJECT_API_KEY']}"
+      
+      puts url
+
       uri = URI(url)
       response = Net::HTTP.get(uri)
       api_trails = JSON.parse(response)
+
+      if api_trails["trails"] == nil
+        raise "An error has occured. response message: #{response}"
+        return
+      end
             
       api_trails["trails"].map {|trail|
 
