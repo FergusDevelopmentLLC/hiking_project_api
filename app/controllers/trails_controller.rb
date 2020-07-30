@@ -74,7 +74,6 @@ class TrailsController < ApplicationController
       # https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
       t.assign_attributes(trail)
       t.save()
-      puts t.id
     end
     
     # binding.pry
