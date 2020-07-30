@@ -8,41 +8,40 @@ class Scraper
 
       uri = URI(url)
       response = Net::HTTP.get(uri)
-      api_trails = JSON.parse(response)
+      api_response_raw = JSON.parse(response)
 
-      if api_trails["trails"] == nil
+      if api_response_raw["trails"] == nil
         raise "An error has occured. response message: #{response}"
         return
       end
             
-      api_trails["trails"].map {|trail|
-
-        {   
-          :hiking_project_id => trail["id"],
-          :name => trail["name"],
-          :trail_type => trail["type"],
-          :length => trail["length"],
-          :summary => trail["summary"],
-          :stars => trail["stars"],
-          :starVotes => trail["starVotes"],
-          :location => trail["location"],
-          :imgSqSmall => trail["imgSqSmall"],
-          :imgSmall => trail["imgSmall"],
-          :imgSmallMed => trail["imgSmallMed"],
-          :imgMedium => trail["imgMedium"],
-          :difficulty => trail["difficulty"],
-          :ascent => trail["ascent"],
-          :descent => trail["descent"],
-          :high => trail["high"],
-          :low => trail["low"],
-          :longitude => trail["longitude"],
-          :latitude => trail["latitude"],
-          :url => trail["url"],
-          :conditionStatus => trail["conditionStatus"],
-          :conditionDetails => trail["conditionDetails"],
-          :conditionDate => trail["conditionDate"]
+      trails_from_api = api_response_raw["trails"].map {|trail| {   
+        :hiking_project_id => trail["id"],
+        :name => trail["name"],
+        :trail_type => trail["type"],
+        :length => trail["length"],
+        :summary => trail["summary"],
+        :stars => trail["stars"],
+        :starVotes => trail["starVotes"],
+        :location => trail["location"],
+        :imgSqSmall => trail["imgSqSmall"],
+        :imgSmall => trail["imgSmall"],
+        :imgSmallMed => trail["imgSmallMed"],
+        :imgMedium => trail["imgMedium"],
+        :difficulty => trail["difficulty"],
+        :ascent => trail["ascent"],
+        :descent => trail["descent"],
+        :high => trail["high"],
+        :low => trail["low"],
+        :longitude => trail["longitude"],
+        :latitude => trail["latitude"],
+        :url => trail["url"],
+        :conditionStatus => trail["conditionStatus"],
+        :conditionDetails => trail["conditionDetails"],
+        :conditionDate => trail["conditionDate"]
         }   
       }
+
     end
 
     def self.scrape_trail_detail(trail_url)
