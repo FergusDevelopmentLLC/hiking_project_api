@@ -66,14 +66,17 @@ class TrailsController < ApplicationController
 
   def for_coords
 
-    @trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: params[:max_results])
-
+    raw_trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: params[:max_results])
+    
+    @trails = []
+    
     #save each trail to the local db
-    @trails.each do |trail|
+    raw_trails.each do |trail|
       t = Trail.find_or_create_by(hiking_project_id: trail[:hiking_project_id])
       # https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
       t.assign_attributes(trail)
       t.save()
+      @trails.push(t)
     end
     
     # binding.pry
