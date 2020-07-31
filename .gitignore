@@ -45,6 +45,7 @@ seeds.rb
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+history_for_print.txt
 
 /bin/*
 

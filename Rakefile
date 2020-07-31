@@ -218,3 +218,14 @@ task :populate_distance do
   #RAILS_ENV=development bundle exec rake environment populate_distance
 end
 
+desc 'reset trail detail views'
+task :reset_trail_detail_views do
+  Trail.all.each {|trail|
+    trail[:detail_views] = 0
+    trail.save()
+    puts "trail saved: #{trail.id} #{trail.name}"
+    puts "------------------------"
+  }
+  #RAILS_ENV=development bundle exec rake environment reset_trail_detail_views
+end
+
