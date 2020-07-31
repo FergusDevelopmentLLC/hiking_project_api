@@ -79,7 +79,6 @@ class TrailsController < ApplicationController
       @trails.push(t)
     end
     
-    # binding.pry
     render json: @trails
   end
 
@@ -91,6 +90,6 @@ class TrailsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def trail_params
-      params.require(:trail).permit(:hiking_project_id, :name, :trail_type, :summary, :difficulty, :stars, :starVotes, :location, :url, :imgSqSmall, :imgSmall, :imgSmallMed, :imgMedium, :length, :ascent, :descent, :high, :low, :longitude, :latitude, :conditionStatus, :conditionDetails, :conditionDate, :features, :overview, :description)
+      params.require(:trail).permit(:id, :hiking_project_id, :name, :trail_type, :summary, :difficulty, :stars, :starVotes, :location, :url, :imgSqSmall, :imgSmall, :imgSmallMed, :imgMedium, :length, :ascent, :descent, :high, :low, :longitude, :latitude, :conditionStatus, :conditionDetails, :conditionDate, :features, :overview, :description, :detail_views)
     end
 end
