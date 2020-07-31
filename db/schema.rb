@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_13_184422) do
+ActiveRecord::Schema.define(version: 2020_07_31_000606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "cities", force: :cascade do |t|
+  create_table "cities", id: :bigint, default: nil, force: :cascade do |t|
     t.string "name"
     t.string "state"
     t.string "country"
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(version: 2020_07_13_184422) do
     t.float "longitude"
     t.string "timezone"
     t.integer "population"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
     t.string "slug"
     t.string "state_abbrev"
   end
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 2020_07_13_184422) do
     t.integer "trail_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "distance"
   end
 
   create_table "trails", force: :cascade do |t|
@@ -65,6 +66,7 @@ ActiveRecord::Schema.define(version: 2020_07_13_184422) do
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "detail_views", default: 0
   end
 
 end
