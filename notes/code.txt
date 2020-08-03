@@ -1,0 +1,67 @@
+t.hiking_project_id = 7011192
+t.name = "Boulder Skyline Traverse"
+t.trail_type = "Recommended Route"
+t.summary = "The classic long mountain route in Boulder."
+t.difficulty = "black"
+t.stars = 4.7
+t.starVotes = 85
+t.location = "Superior, Colorado"
+t.url = "https://www.hikingproject.com/trail/7011192/boulder-skyline-traverse"
+t.imgSqSmall = "https://cdn2.apstatic.com/photos/hike/7048859_sqsmall_1555540136.jpg"
+t.imgSmall = "https://cdn2.apstatic.com/photos/hike/7048859_small_1555540136.jpg"
+t.imgSmallMed = "https://cdn2.apstatic.com/photos/hike/7048859_smallMed_1555540136.jpg"
+t.imgMedium = "https://cdn2.apstatic.com/photos/hike/7048859_medium_1555540136.jpg"
+t.length = 16.3
+t.ascent = 5409
+t.descent = -5492
+t.high = 8492
+t.low = 5417
+t.longitude = 105.2582
+t.latitude = 39.9388
+t.conditionStatus = "All Clear"
+t.conditionDetails = "Dry"
+t.conditionDate = "2020-06-20 23:07:00"
+
+
+rails generate scaffold Trail hiking_project_id:integer name:string trail_type:string summary:string difficulty:string stars:float starVotes:integer location:string url:string imgSqSmall:string imgSmall:string imgSmallMed:string imgMedium:string length:float ascent:integer descent:integer high:integer low:integer longitude:float latitude:float conditionStatus:string conditionDetails:string conditionDate:date features:string overview:string description:string
+
+ActiveRecord::Base.connection.tables.each do |table_name| 
+  ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
+end
+
+
+
+ puts "Here are some example coordinates:"
+  puts "Denver, CO: 39.74, -104.96"
+  puts "Chicago, IL: 41.83, -87.64"
+  puts "New York, NY: 40.73, -73.99"
+  puts "San Francisco, CA: 37.75, -122.44"
+
+Denver, CO
+https://hiking-project-api.herokuapp.com/trails/39.74/-104.96
+
+New York, NY: 
+https://hiking-project-api.herokuapp.com/trails/40.73/-73.99
+
+Chicago
+https://hiking-project-api.herokuapp.com/trails/41.83/-87.64
+
+San Fran
+https://hiking-project-api.herokuapp.com/trails/37.75/-122.44
+
+rails generate scaffold City name:string state:string country:string latitude:float longitude:float timezone:string population:integer
+
+rails generate scaffold CitiesTrail city_id:integer trail_id:integer
+
+--ActiveRecord::Base.connection.tables.each do |table_name| 
+--  ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
+--end
+
+ActiveRecord::Base.connection.tables.each do |table_name| 
+  ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
+end
+
+rails generate migration AddDistanceToCitiesTrails distance:float
+
+what is it? I just copied the environment var over from herokupg
+SECRET_KEY_BASE

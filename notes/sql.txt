@@ -1,0 +1,340 @@
+--------------------------------------------------------------------
+
+ select geom, name, adm1name as state, 'United States' as country, latitude, longitude, timezone, pop_min as population
+ from populated_places 
+ where sov0name in  ('United States', 'United States of America')
+ order by pop_min desc;
+
+create table cities 
+(
+  id serial PRIMARY KEY,
+  name varchar(256),
+  state varchar(256),
+  country varchar(256),
+  latitude numeric,
+  longitude numeric,
+  timezone varchar(256),
+  population integer
+);
+
+SELECT AddGeometryColumn ('public','cities','geom',4326,'MULTIPOINT',2);
+
+insert into cities
+SELECT id, name, adm1name as state, sov0name as country, latitude, longitude, timezone, pop_min as population, geom
+FROM populated_places 
+WHERE sov0name in ('United States', 'United States of America')
+ORDER BY pop_min desc;
+
+select * from cities;
+
+SELECT id, name, state, country, latitude, longitude, timezone, population, 
+       created_at, updated_at
+  FROM public.cities;
+
+
+insert into public.cities
+SELECT id, name, adm1name as state, sov0name as country, latitude, longitude, timezone, pop_min as population, geom
+FROM populated_places 
+WHERE sov0name in ('United States', 'United States of America')
+ORDER BY pop_min desc;
+
+SELECT name, state, country, latitude, longitude, timezone, population FROM public.cities
+
+
+Copy (SELECT name, state, country, latitude, longitude, timezone, population FROM public.cities) To '/tmp/cities.csv' With CSV DELIMITER ',' HEADER;
+
+copy cities FROM '/tmp/cities_wid.csv' DELIMITER ',' CSV HEADER;
+
+select * from cities;
+
+update cities set state_abbrev = 'AK' where state = 'Alaska';
+update cities set state_abbrev = 'AL' where state = 'Alabama';
+update cities set state_abbrev = 'AZ' where state = 'Arizona';
+update cities set state_abbrev = 'AR' where state = 'Arkansas';
+update cities set state_abbrev = 'CA' where state = 'California';
+update cities set state_abbrev = 'CO' where state = 'Colorado';
+update cities set state_abbrev = 'CT' where state = 'Connecticut';
+update cities set state_abbrev = 'DE' where state = 'Delaware';
+update cities set state_abbrev = 'FL' where state = 'Florida';
+update cities set state_abbrev = 'GA' where state = 'Georgia';
+update cities set state_abbrev = 'HI' where state = 'Hawaii';
+update cities set state_abbrev = 'ID' where state = 'Idaho';
+update cities set state_abbrev = 'IL' where state = 'Illinois';
+update cities set state_abbrev = 'IN' where state = 'Indiana';
+update cities set state_abbrev = 'IA' where state = 'Iowa';
+update cities set state_abbrev = 'KS' where state = 'Kansas';
+update cities set state_abbrev = 'KY' where state = 'Kentucky';
+update cities set state_abbrev = 'LA' where state = 'Louisiana';
+update cities set state_abbrev = 'ME' where state = 'Maine';
+update cities set state_abbrev = 'MD' where state = 'Maryland';
+update cities set state_abbrev = 'MA' where state = 'Massachusetts';
+update cities set state_abbrev = 'MI' where state = 'Michigan';
+update cities set state_abbrev = 'MN' where state = 'Minnesota';
+update cities set state_abbrev = 'MS' where state = 'Mississippi';
+update cities set state_abbrev = 'MO' where state = 'Missouri';
+update cities set state_abbrev = 'MT' where state = 'Montana';
+update cities set state_abbrev = 'NE' where state = 'Nebraska';
+update cities set state_abbrev = 'NV' where state = 'Nevada';
+update cities set state_abbrev = 'NH' where state = 'New Hampshire';
+update cities set state_abbrev = 'NJ' where state = 'New Jersey';
+update cities set state_abbrev = 'NM' where state = 'New Mexico';
+update cities set state_abbrev = 'NY' where state = 'New York';
+update cities set state_abbrev = 'NC' where state = 'North Carolina';
+update cities set state_abbrev = 'ND' where state = 'North Dakota';
+update cities set state_abbrev = 'OH' where state = 'Ohio';
+update cities set state_abbrev = 'OK' where state = 'Oklahoma';
+update cities set state_abbrev = 'OR' where state = 'Oregon';
+update cities set state_abbrev = 'PA' where state = 'Pennsylvania';
+update cities set state_abbrev = 'RI' where state = 'Rhode Island';
+update cities set state_abbrev = 'SC' where state = 'South Carolina';
+update cities set state_abbrev = 'SD' where state = 'South Dakota';
+update cities set state_abbrev = 'TN' where state = 'Tennessee';
+update cities set state_abbrev = 'TX' where state = 'Texas';
+update cities set state_abbrev = 'UT' where state = 'Utah';
+update cities set state_abbrev = 'VT' where state = 'Vermont';
+update cities set state_abbrev = 'VA' where state = 'Virginia';
+update cities set state_abbrev = 'WA' where state = 'Washington';
+update cities set state_abbrev = 'WV' where state = 'West Virginia';
+update cities set state_abbrev = 'WI' where state = 'Wisconsin';
+update cities set state_abbrev = 'WY' where state = 'Wyoming';
+
+truncate table cities;
+truncate table trails;
+truncate table cities_trails;
+
+
+
+
+
+-- rake populate_db (with cities file uncommented)
+select * from cities;
+update cities set state_abbrev = 'AK' where state = 'Alaska';
+update cities set state_abbrev = 'AL' where state = 'Alabama';
+update cities set state_abbrev = 'AZ' where state = 'Arizona';
+update cities set state_abbrev = 'AR' where state = 'Arkansas';
+update cities set state_abbrev = 'CA' where state = 'California';
+update cities set state_abbrev = 'CO' where state = 'Colorado';
+update cities set state_abbrev = 'CT' where state = 'Connecticut';
+update cities set state_abbrev = 'DE' where state = 'Delaware';
+update cities set state_abbrev = 'FL' where state = 'Florida';
+update cities set state_abbrev = 'GA' where state = 'Georgia';
+update cities set state_abbrev = 'HI' where state = 'Hawaii';
+update cities set state_abbrev = 'ID' where state = 'Idaho';
+update cities set state_abbrev = 'IL' where state = 'Illinois';
+update cities set state_abbrev = 'IN' where state = 'Indiana';
+update cities set state_abbrev = 'IA' where state = 'Iowa';
+update cities set state_abbrev = 'KS' where state = 'Kansas';
+update cities set state_abbrev = 'KY' where state = 'Kentucky';
+update cities set state_abbrev = 'LA' where state = 'Louisiana';
+update cities set state_abbrev = 'ME' where state = 'Maine';
+update cities set state_abbrev = 'MD' where state = 'Maryland';
+update cities set state_abbrev = 'MA' where state = 'Massachusetts';
+update cities set state_abbrev = 'MI' where state = 'Michigan';
+update cities set state_abbrev = 'MN' where state = 'Minnesota';
+update cities set state_abbrev = 'MS' where state = 'Mississippi';
+update cities set state_abbrev = 'MO' where state = 'Missouri';
+update cities set state_abbrev = 'MT' where state = 'Montana';
+update cities set state_abbrev = 'NE' where state = 'Nebraska';
+update cities set state_abbrev = 'NV' where state = 'Nevada';
+update cities set state_abbrev = 'NH' where state = 'New Hampshire';
+update cities set state_abbrev = 'NJ' where state = 'New Jersey';
+update cities set state_abbrev = 'NM' where state = 'New Mexico';
+update cities set state_abbrev = 'NY' where state = 'New York';
+update cities set state_abbrev = 'NC' where state = 'North Carolina';
+update cities set state_abbrev = 'ND' where state = 'North Dakota';
+update cities set state_abbrev = 'OH' where state = 'Ohio';
+update cities set state_abbrev = 'OK' where state = 'Oklahoma';
+update cities set state_abbrev = 'OR' where state = 'Oregon';
+update cities set state_abbrev = 'PA' where state = 'Pennsylvania';
+update cities set state_abbrev = 'RI' where state = 'Rhode Island';
+update cities set state_abbrev = 'SC' where state = 'South Carolina';
+update cities set state_abbrev = 'SD' where state = 'South Dakota';
+update cities set state_abbrev = 'TN' where state = 'Tennessee';
+update cities set state_abbrev = 'TX' where state = 'Texas';
+update cities set state_abbrev = 'UT' where state = 'Utah';
+update cities set state_abbrev = 'VT' where state = 'Vermont';
+update cities set state_abbrev = 'VA' where state = 'Virginia';
+update cities set state_abbrev = 'WA' where state = 'Washington';
+update cities set state_abbrev = 'WV' where state = 'West Virginia';
+update cities set state_abbrev = 'WI' where state = 'Wisconsin';
+update cities set state_abbrev = 'WY' where state = 'Wyoming';
+
+-- rake populate_db (with trails file uncommented)
+select count(*) from cities;
+
+-- rake populate_db (with trails file uncommented)
+select count(*) from trails;
+
+-- rake populate_db (with cities_trails file uncommented)
+select count(*) from cities_trails;
+
+SELECT * INTO cities_orig FROM cities;
+SELECT * INTO trails_orig FROM trails;
+SELECT * INTO cities_trails_orig FROM cities_trails;
+
+select * from cities_orig order by id;
+select * from trails_orig order by id limit 1000;
+select * from cities_trails_orig order by id limit 1000;
+
+SELECT id, geom, scalerank, natscale, labelrank, featurecla, name, namepar, 
+       namealt, diffascii, nameascii, adm0cap, capin, worldcity, megacity, 
+       sov0name, sov_a3, adm0name, adm0_a3, adm1name, iso_a2, note, 
+       latitude, longitude, changed, namediff, diffnote, pop_max, pop_min, 
+       pop_other, rank_max, rank_min, geonameid, meganame, ls_name, 
+       ls_match, checkme, max_pop10, max_pop20, max_pop50, max_pop300, 
+       max_pop310, max_natsca, min_areakm, max_areakm, min_areami, max_areami, 
+       min_perkm, max_perkm, min_permi, max_permi, min_bbxmin, max_bbxmin, 
+       min_bbxmax, max_bbxmax, min_bbymin, max_bbymin, min_bbymax, max_bbymax, 
+       mean_bbxc, mean_bbyc, compare, gn_ascii, feature_cl, feature_co, 
+       admin1_cod, gn_pop, elevation, gtopo30, timezone, geonamesno, 
+       un_fid, un_adm0, un_lat, un_long, pop1950, pop1955, pop1960, 
+       pop1965, pop1970, pop1975, pop1980, pop1985, pop1990, pop1995, 
+       pop2000, pop2005, pop2010, pop2015, pop2020, pop2025, pop2050, 
+       cityalt, min_zoom, wikidataid, wof_id, capalt, name_en, name_de, 
+       name_es, name_fr, name_pt, name_ru, name_zh
+  FROM public.populated_places where name like '%City%';
+
+  select count (*) from populated_places_v02_raw;
+
+  SELECT id, name, ST_Centroid(geom) as geom
+  FROM public.populated_places_v02_raw 
+  where name like '%Michigan%' limit 10;
+
+SELECT id, geom, fid, objectid, name, class, st, stfips, placefips, 
+       houseunits, pop2012, pop_class, pop12_sqmi, sqmi
+  FROM public.populated_places_v02_raw limit 10;
+
+
+SELECT id, name, state, country, latitude, longitude, timezone, population, created_at, updated_at, slug, state_abbrev
+FROM public.cities limit 10;
+
+
+SELECT id, geom, ST_Centroid(geom) as centroid, name, null as state, 'United States' as country, ST_Y(ST_Centroid(geom)) as latitude, ST_X(ST_Centroid(geom)) as longitude, null as timezone, pop2012 as population, now() as created_at, now() as update_at, st as state_abbrev
+FROM populated_places_v02_raw;
+
+SELECT ST_Centroid(geom) as geom, name, null as state, 'United States' as country, ST_Y(ST_Centroid(geom)) as latitude, ST_X(ST_Centroid(geom)) as longitude, null as timezone, pop2012 as population, now() as created_at, now() as update_at, st as state_abbrev
+FROM populated_places_v02_raw limit 10;
+
+SELECT name, cast(null as varchar) as state, cast('United States' as varchar) as country, ST_Y(ST_Centroid(geom)) as latitude, ST_X(ST_Centroid(geom)) as longitude, cast(null as varchar) as timezone, pop2012 as population, now() as created_at, now() as update_at, st as state_abbrev
+FROM populated_places_v02_raw limit 10;
+
+drop table cities_20200722;
+
+SELECT name, cast(null as varchar) as state, cast('United States' as varchar) as country, ST_Y(ST_Centroid(geom)) as latitude, ST_X(ST_Centroid(geom)) as longitude, cast(null as varchar) as timezone, pop2012 as population, now() as created_at, now() as update_at, st as state_abbrev
+INTO cities_20200722 
+FROM populated_places_v02_raw;
+
+select * from cities_20200722 limit 10;
+
+select count(*) from cities_20200722;
+
+SELECT id, name, state, country, latitude, longitude, timezone, population, 
+       created_at, updated_at, slug, state_abbrev
+  FROM public.cities;
+
+
+select * 
+into cities_20200722 
+from cities
+where name is null;
+
+drop table cities_20200722;
+select * from cities_20200722;
+
+SELECT name, cast(null as varchar) as state, cast('United States' as varchar) as country, ST_Y(ST_Centroid(geom)) as latitude, ST_X(ST_Centroid(geom)) as longitude, cast(null as varchar) as timezone, pop2012 as population, now() as created_at, now() as update_at, st as state_abbrev
+INTO cities_20200722 
+FROM populated_places_v02_raw;
+
+COPY cities_20200722 (id, name, state, country, latitude, longitude, timezone, population, created_at, updated_at, state_abbrev)
+FROM '/tmp/cities_20200722_v3.csv'
+DELIMITER ','
+CSV HEADER;
+
+select name, state_abbrev
+from cities;
+
+select cities_20200722.id, cities_20200722.name, cities_20200722.state, cities_20200722.country, cities_20200722.latitude, cities_20200722.longitude, cities_20200722.timezone, cities_20200722.created_at, cities_20200722.updated_at, cast('' as varchar) as slug, cities_20200722.state_abbrev 
+from cities_20200722
+left join cities on cities.name = cities_20200722.name and cities.state_abbrev = cities_20200722.state_abbrev
+where cities.name is NULL
+limit 1000;
+
+insert into cities(id, name, state, country, latitude, longitude, timezone, population, created_at, updated_at, slug, state_abbrev)
+select cities_20200722.id, cities_20200722.name, cities_20200722.state, cities_20200722.country, cities_20200722.latitude, cities_20200722.longitude, cities_20200722.timezone, cities_20200722.population, cities_20200722.created_at, cities_20200722.updated_at, cast('' as varchar) as slug, cities_20200722.state_abbrev 
+from cities_20200722
+left join cities on cities.name = cities_20200722.name and cities.state_abbrev = cities_20200722.state_abbrev
+where cities.name is NULL;
+
+select count(*) from cities;
+
+select * 
+into cities_20200722_v3 
+from cities;
+
+select * from cities where name = 'Denver';
+
+ALTER TABLE Persons
+ADD PRIMARY KEY (P_Id)
+
+select count(*) from cities;
+
+select name, state_abbrev, population
+from cities
+where 1 = 1
+and population > 4999
+order by population desc;
+
+
+select * from cities_trails where city_id = 5;
+delete from cities_trails where city_id = 5;
+
+truncate table cities_trails;
+select * from cities_trails;
+
+SELECT * INTO cities_trails_20200722 FROM cities_trails;
+
+
+SELECT id, city_id, trail_id, created_at, updated_at, distance
+  FROM public.cities_trails;
+
+delete from cities_trails where city_id = 16558;
+
+select * from cities where id = 16558;
+
+select * from cities where id = 192;
+
+delete from cities_trails where city_id = 192;
+
+select * from cities where id = 4435;
+delete from cities_trails where city_id = 4435;
+
+select count(distinct city_id)
+from cities_trails;
+
+
+select * from cities where id = 4435;
+delete from cities_trails where city_id = 4435;
+
+select * from cities where id = 26673;
+
+select * from cities where id = 3571;
+
+SELECT id, city_id, trail_id, created_at, updated_at, distance
+  FROM public.cities_trails;
+
+select count(distinct city_id) from cities_trails;
+
+select count(*) from trails;
+
+select * from cities where id = 22305;
+
+select *
+from cities where population > 4999 and population < 5229;
+
+
+pg_dump hiking_trail_api > /tmp/hiking_trail_api_202007221113pm;
+
+
+ALTER USER postgres WITH PASSWORD 'password';
+
+
