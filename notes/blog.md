@@ -28,10 +28,9 @@ https://res.cloudinary.com/fergusdev/image/upload/v1596492837/hikefinder/blog%20
 ---
 http://hikefinder.net:3000/trails/41.95/-87.63/5/15
 
-The api has endpoints with decimals in them. I used the technique described in routes.rb
+The api has endpoints with decimals in them. I used the technique described in routes.rb.
 
 https://github.com/FergusDevelopmentLLC/hiking_project_api/blob/master/config/routes.rb
-
 
 ```
 # this goes to the api
@@ -72,19 +71,68 @@ These links explain about how to populate tables. I had a starting table of plac
 https://hub.arcgis.com/datasets/esri::usa-census-populated-places
 
 ---
+
+A city has many trails and a trail can belong to many cities. We need a join table CitiesTrails.
+
 https://guides.rubyonrails.org/association_basics.html#the-has-and-belongs-to-many-association
+
+---
+I needed a way to test the endpoints of the api. I have used Postman before.
+
 https://medium.com/@spaquet/testing-rails-5-api-with-postman-36f1e79dc4d
+
+I used Insomnia this time, it worked great. Here is a good blog post comparing the two. I find insomnia is a bit easier to use.
+
+https://itnext.io/postman-vs-insomnia-comparing-the-api-testing-tools-4f12099275c1
+
+---
+
 https://stackoverflow.com/questions/7098732/how-to-add-a-delay-to-rails-controller-for-testing
+
+Here, I was figuring out my rake task script that calls the Hiking Project API for each of the top ~6000 cities by population in the USA. See populate_trails_for_cities in Rakefile.
+
+---
+
 https://apidock.com/rails/v4.0.2/ActiveRecord/Relation/find_or_create_by
-https://apidock.com/ruby/Enumerator/each_with_index
+
+This is a very powerful method in Active Record. It let's you instantiate an object from the database if it exists, otherwise it creates a new one. Because I am keeping track of the hiking_project_id unique id the local database. I refresh the data with with the latest when a trail matches the query.
+
+---
 https://stackoverflow.com/questions/13173618/truncate-tables-with-rails-console
+
+I was looking for a way to truncate tables here to start over with population. Truncate means to delete all the rows in a table and reset the primary key to 1.
+
+---
 https://github.com/jnunemaker/httparty
-https://www.postman.com/downloads/
+
+This is the gem used to make the api calls to the Hiking Project when the user queries the map by a latitude/longitude point.
+
+---
+
 https://medium.com/@hartaniyassir/creating-slug-urls-in-rails-without-gems-c693e0eeec8a
+
+I needed city slugs so that urls like the following would work:
+
+http://hikefinder.net:3000/cities/new-york/ny/trails
+
+https://res.cloudinary.com/fergusdev/image/upload/v1596496214/hikefinder/blog%20images/slug_rvk5ce.png
+
+Check out populate_city_slugs rake tase in RakeFile
+
+---
+
 https://alvinalexander.com/blog/post/ruby/how-process-line-text-file-ruby/
+
 https://stackoverflow.com/questions/1188893/is-there-a-way-in-ruby-rails-to-execute-code-that-is-in-a-string
-https://stackoverflow.com/questions/34727605/heroku-cannot-run-more-than-1-free-size-dynos
+
+Here I was having trouble getting rake db:seed to work because the seeds.rb file was so big. I figured out that if you run the the rake task, populate_db, it will populate the tables even with very large seed files.
+
+---
+
 https://gist.github.com/zulhfreelancer/ea140d8ef9292fa9165e
+
+---
+
 https://apidock.com/rails/ActiveRecord/QueryMethods/where
 https://stackoverflow.com/questions/2220423/case-insensitive-search-in-rails-model
 https://abbreviations.yourdictionary.com/articles/state-abbrev.html
@@ -201,3 +249,4 @@ https://stackoverflow.com/questions/24565589/can-i-pass-default-value-to-rails-g
 
 https://devcenter.heroku.com/articles/renaming-apps#updating-git-remotes
 https://postgis.net/docs/AddGeometryColumn.html
+https://stackoverflow.com/questions/34727605/heroku-cannot-run-more-than-1-free-size-dynos
