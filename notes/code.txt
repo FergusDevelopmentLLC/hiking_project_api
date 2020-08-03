@@ -23,7 +23,7 @@ t.conditionDetails = "Dry"
 t.conditionDate = "2020-06-20 23:07:00"
 
 
-rails generate scaffold Trail hiking_project_id:integer name:string trail_type:string summary:string difficulty:string stars:float starVotes:integer location:string url:string imgSqSmall:string imgSmall:string imgSmallMed:string imgMedium:string length:float ascent:integer descent:integer high:integer low:integer longitude:float latitude:float conditionStatus:string conditionDetails:string conditionDate:date features:string overview:string description:string
+
 
 ActiveRecord::Base.connection.tables.each do |table_name| 
   ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
@@ -49,9 +49,6 @@ https://hiking-project-api.herokuapp.com/trails/41.83/-87.64
 San Fran
 https://hiking-project-api.herokuapp.com/trails/37.75/-122.44
 
-rails generate scaffold City name:string state:string country:string latitude:float longitude:float timezone:string population:integer
-
-rails generate scaffold CitiesTrail city_id:integer trail_id:integer
 
 --ActiveRecord::Base.connection.tables.each do |table_name| 
 --  ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
@@ -61,7 +58,7 @@ ActiveRecord::Base.connection.tables.each do |table_name|
   ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
 end
 
-rails generate migration AddDistanceToCitiesTrails distance:float
+
 
 what is it? I just copied the environment var over from herokupg
 SECRET_KEY_BASE

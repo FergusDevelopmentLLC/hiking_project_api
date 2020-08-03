@@ -1,7 +1,9 @@
 https://guides.rubyonrails.org/api_app.html
+
 https://rollout.io/blog/building-a-json-api-with-rails-5/
 
 Here I was looking at how you generate a Ruby on Rails API only application. There is a series of generate statements that basically created the backend.
+
 ```
 rails generate scaffold Trail hiking_project_id:integer name:string trail_type:string summary:string difficulty:string stars:float starVotes:integer location:string url:string imgSqSmall:string imgSmall:string imgSmallMed:string imgMedium:string length:float ascent:integer descent:integer high:integer low:integer longitude:float latitude:float conditionStatus:string conditionDetails:string conditionDate:date features:string overview:string description:string
 rails generate scaffold City name:string state:string country:string latitude:float longitude:float timezone:string population:integer
@@ -9,21 +11,67 @@ rails generate scaffold CitiesTrail city_id:integer trail_id:integer
 rails generate migration AddDistanceToCitiesTrails distance:float
 ```
 
+---
+
 https://www.hikingproject.com/data
-https://github.com/FergusDevelopmentLLC/hiking_project_api
+
+This is the ultimate source of the data for hikefinder.net. The backend api https://github.com/FergusDevelopmentLLC/hiking_project_api for this app is a hybrid that calls the Hiking Project Data API under some circumstances and queries a local postgres database containing trail and city information.
+
+---
+
 https://www.hikingproject.com/data/get-trails?lat=40.0274&lon=-105.2519&maxDistance=10&key=200678194-2bc7d6bf1038d082a1d8e2ab00b617ca
+
+Here is an example call to the api and what a return result consisting of trails looks like:
+
+https://res.cloudinary.com/fergusdev/image/upload/v1596492837/hikefinder/blog%20images/hiking_project_raw_oyk7oo.png
+
+---
+http://hikefinder.net:3000/trails/41.95/-87.63/5/15
+
+The api has endpoints with decimals in them. I used the technique described in routes.rb
+
+https://github.com/FergusDevelopmentLLC/hiking_project_api/blob/master/config/routes.rb
+
+
+```
+# this goes to the api
+get 'trails/:latitude/:longitude/:max_distance/:max_results', to: 'trails#for_coords', constraints: { 
+  :latitude => /[^\/]+/, 
+  :longitude => /[^\/]+/,
+  :max_distance => /[^\/]+/,
+  :max_results => /[^\/]+/,
+}
+```
+The following links helped me to work this out and make a route containing . work correctly.
 http://uchinoinu.hatenablog.jp/entry/2016/09/14/230051
+
 https://stackoverflow.com/questions/59116050/rails-routing-error-with-get-locations-around-17-28794-16-9
+
 https://stackoverflow.com/questions/2648727/rails-pretty-url-with-decimals
-https://guides.rubyonrails.org/api_app.html
-http://127.0.0.1:3000/trails/40.0274/-105.2519
-https://www.hikingproject.com/data/get-trails?lat=40.0274&lon=-105.2519&maxDistance=10&key=200678194-2bc7d6bf1038d082a1d8e2ab00b617ca
+
+---
+
 https://stackoverflow.com/questions/47577532/why-pguniqueviolation-error-duplicate-key-value-violates-unique-constraint?rq=1
-https://devcenter.heroku.com/articles/renaming-apps#updating-git-remotes
-https://postgis.net/docs/AddGeometryColumn.html
+
+I have come across this error a few times with postgres. The fix is to go to the rails console and execute:
+
+```
+ActiveRecord::Base.connection.tables.each do |table_name| 
+  ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
+end
+```
+
+This resets all the primary keys in your tables.
+
+---
 https://www.w3schools.com/sql/sql_select_into.asp
 https://stackoverflow.com/questions/15508948/create-a-new-table-and-adding-a-primary-key-using-select-into
-https://www.postgresqltutorial.com/postgresql-insert/
+
+These links explain about how to populate tables. I had a starting table of places sourced from here:
+
+https://hub.arcgis.com/datasets/esri::usa-census-populated-places
+
+---
 https://guides.rubyonrails.org/association_basics.html#the-has-and-belongs-to-many-association
 https://medium.com/@spaquet/testing-rails-5-api-with-postman-36f1e79dc4d
 https://stackoverflow.com/questions/7098732/how-to-add-a-delay-to-rails-controller-for-testing
@@ -150,3 +198,6 @@ https://stackoverflow.com/questions/15769739/determining-type-of-an-object-in-ru
 https://apidock.com/rails/v4.0.2/ActiveRecord/Relation/find_or_create_by
 https://googlechrome.github.io/samples/fetch-api/fetch-post.html
 https://stackoverflow.com/questions/24565589/can-i-pass-default-value-to-rails-generate-migration
+
+https://devcenter.heroku.com/articles/renaming-apps#updating-git-remotes
+https://postgis.net/docs/AddGeometryColumn.html
