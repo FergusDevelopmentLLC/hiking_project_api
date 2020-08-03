@@ -1,7 +1,14 @@
-# README
+# hiking_project_api
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the backend to this front end:
+
+https://github.com/FergusDevelopmentLLC/hiking_project_fe
+
+Live site:
+
+http://hikefinder.net/
+
+TODO: 
 
 Things you may want to cover:
 
