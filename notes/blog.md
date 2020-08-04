@@ -41,7 +41,9 @@ get 'trails/:latitude/:longitude/:max_distance/:max_results', to: 'trails#for_co
   :max_results => /[^\/]+/,
 }
 ```
-The following links helped me to work this out and make a route containing . work correctly.
+
+The following links helped me to work this out and make a route containing a period(.) work correctly.
+
 http://uchinoinu.hatenablog.jp/entry/2016/09/14/230051
 
 https://stackoverflow.com/questions/59116050/rails-routing-error-with-get-locations-around-17-28794-16-9
@@ -117,6 +119,8 @@ http://hikefinder.net:3000/cities/new-york/ny/trails
 
 https://res.cloudinary.com/fergusdev/image/upload/v1596496214/hikefinder/blog%20images/slug_rvk5ce.png
 
+https://medium.com/@hartaniyassir/creating-slug-urls-in-rails-without-gems-c693e0eeec8a
+
 Check out populate_city_slugs rake tase in RakeFile
 
 ---
@@ -131,47 +135,85 @@ Here I was having trouble getting rake db:seed to work because the seeds.rb file
 
 https://gist.github.com/zulhfreelancer/ea140d8ef9292fa9165e
 
+Here I was figuring out how to reset the pg database on Heroku.
+
 ---
 
-https://apidock.com/rails/ActiveRecord/QueryMethods/where
-https://stackoverflow.com/questions/2220423/case-insensitive-search-in-rails-model
-https://abbreviations.yourdictionary.com/articles/state-abbrev.html
-https://medium.com/@hartaniyassir/creating-slug-urls-in-rails-without-gems-c693e0eeec8a
 https://github.com/tonytonyjan/geodesics
+
+I needed to calculate distance between two latitude/longitude points. This gem worked great. See it being used in Rakefile: populate_distance method.
+
+---
+
 https://mashable.com/2013/07/11/lorem-ipsum/
-https://dashboard.heroku.com/apps/hiking-project-api/settings
+
+Ever need some fresh lorem ipsum text? Here's a good source.
+
+---
+
 https://www.digitalocean.com/community/tutorials/how-to-set-up-ruby-on-rails-with-postgres
-https://dba.stackexchange.com/questions/83164/postgresql-remove-password-requirement-for-user-postgres
+
+At this point, when I had run the script that populates the trails db by calling the Hiking Project API, I was over the row limit on Heroku for the free plan. The row limit on Heroku's free plan is 10k rows. The trails table at this point had over 30k trails.
+
+So, because I have experience with Digital Ocean, I began the process of migrating there. With Digital Ocean you get what they call a Droplet, which is basically like a little Linux computer in the cloud. You can do whatever you want with it and is a bit more robust than what you get for free with Heroku.
+
+I needed to install postgres...
+
 https://stackoverflow.com/questions/2748607/how-to-thoroughly-purge-and-reinstall-postgresql-on-ubuntu
-https://www.postgresql.org/download/linux/ubuntu/
+
+https://dba.stackexchange.com/questions/83164/postgresql-remove-password-requirement-for-user-postgres
+
+There were configuration that was needed so that the app could talk to the local db...
+
 https://stackoverflow.com/questions/4328679/how-to-configure-postgresql-so-it-accepts-loginpassword-auth
 https://www.postgresql.org/docs/8.1/user-manag.html
-https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
 https://chartio.com/resources/tutorials/how-to-view-which-postgres-version-is-running/
-https://stackoverflow.com/questions/40511333/how-do-i-upgrade-my-activesupport-gem
-https://stackoverflow.com/questions/23963018/rvm-is-not-a-function-selecting-rubies-with-rvm-use-will-not-work
+https://www.postgresql.org/message-id/20000911100931.A5469@mindspring.com
+
+---
 https://rvm.io/workflow/examples
 https://help.learn.co/en/articles/2789231-how-to-upgrade-from-ruby-2-3-to-2-6
-https://www.postgresql.org/docs/8.1/user-manag.html
-https://www.postgresql.org/message-id/20000911100931.A5469@mindspring.com
-https://stackoverflow.com/questions/50102639/running-a-rails-server-in-production-locally-invalidmessage-error
+
+I installed rvm (Ruby Version Manager)
+
+---
 https://til.hashrocket.com/posts/8b8b4d00a3-generate-a-rails-secret-key
-https://www.postgresqltutorial.com/postgresql-show-tables/
-https://stackoverflow.com/questions/3949876/how-to-switch-databases-in-psql
+https://stackoverflow.com/questions/25426940/what-is-the-use-of-secret-key-base-in-rails-4
+
+This link describes how to generate a rails secret key.
+
+---
+
+How do I show all databases and tables in psql?
+
 https://www.postgresqltutorial.com/postgresql-show-databases/
+https://www.postgresqltutorial.com/postgresql-show-tables/
+
+How do I switch databases in psql?
+
+https://stackoverflow.com/questions/3949876/how-to-switch-databases-in-psql
+
+How do I get the name of the current database in psql?
+
 https://dba.stackexchange.com/questions/58312/how-to-get-the-name-of-the-current-database-from-within-postgresql
+
+How do I backup and restore a psql database?
+
 https://www.postgresql.org/docs/9.4/backup-dump.html
-https://dashboard.heroku.com/apps/hiking-project-api/settings
-https://hub.arcgis.com/datasets/esri::usa-census-populated-places
+
+---
+
+https://res.cloudinary.com/fergusdev/image/upload/v1596559804/hikefinder/blog%20images/denver_centroid_bfvn0o.png
+
+---
+
 https://postgis.net/docs/ST_Centroid.html
-https://hub.arcgis.com/datasets/esri::usa-census-populated-places
 https://hub.arcgis.com/datasets/esri::usa-census-populated-places
 https://stackoverflow.com/questions/18950951/cast-string-to-number-interpreting-null-or-empty-string-as-0
 https://stackoverflow.com/questions/20043231/how-to-define-the-type-int-for-a-new-field-in-sql-select-into-statement-in-ms
 https://www.postgresql.org/docs/9.1/sql-selectinto.html
 https://postgis.net/docs/ST_X.html
 https://postgis.net/docs/ST_Y.html
-https://postgis.net/docs/ST_Centroid.html
 https://dba.stackexchange.com/questions/2973/how-to-insert-values-into-a-table-from-a-select-query-in-postgresql
 https://stackoverflow.com/questions/2686254/how-to-select-all-records-from-one-table-that-do-not-exist-in-another-table
 https://stackoverflow.com/questions/11317662/rails-using-greater-than-less-than-with-a-where-statement
@@ -250,3 +292,9 @@ https://stackoverflow.com/questions/24565589/can-i-pass-default-value-to-rails-g
 https://devcenter.heroku.com/articles/renaming-apps#updating-git-remotes
 https://postgis.net/docs/AddGeometryColumn.html
 https://stackoverflow.com/questions/34727605/heroku-cannot-run-more-than-1-free-size-dynos
+https://apidock.com/rails/ActiveRecord/QueryMethods/where
+https://stackoverflow.com/questions/2220423/case-insensitive-search-in-rails-model
+https://abbreviations.yourdictionary.com/articles/state-abbrev.html
+https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
+https://stackoverflow.com/questions/40511333/how-do-i-upgrade-my-activesupport-gem
+https://stackoverflow.com/questions/50102639/running-a-rails-server-in-production-locally-invalidmessage-error
