@@ -269,17 +269,75 @@ Anyway, when I realized I had checked in this history.txt file, I needed a way t
 
 https://medium.com/@9cv9official/what-are-get-post-put-patch-delete-a-walkthrough-with-javascripts-fetch-api-17be31755d28
 
+This resource explains how to send a PATCH request using javascript fetch. Such a request is used when the user clicks on a trail detail. The app accumulates a click count for each trail in order to drive a "most popular trails listing" if when activity on http://hikefinder.net goes viral. :fingers_crossed
+
+---
+
 https://docs.mapbox.com/mapbox-gl-js/api/
 https://docs.mapbox.com/mapbox-gl-js/example/mouse-position/
-https://blockbuilder.org/FergusDevelopmentLLC/4492644236d3836913bcd1339de1854b
-https://bl.ocks.org/FergusDevelopmentLLC/4492644236d3836913bcd1339de1854b/94fee5dbffaf9bcbf15740d3c77c10c4b6f7f8b1
-https://medium.com/@Nicholson85/handling-cors-issues-in-your-rails-api-120dfbcb8a24
-https://stackoverflow.com/questions/36878255/allow-access-control-allow-origin-header-using-html5-fetch-api
-https://dev.to/shoupn/javascript-fetch-api-and-using-asyncawait-47mp
 https://konvajs.org/docs/styling/Mouse_Cursor.html
-https://iconify.design/icon-sets/?query=target
+
+I used the very capable Mapbox GL JS api to drive the map functionality of the app. Examples listed here helped to drive code various features of the front end.
+
+---
+
+https://medium.com/@Nicholson85/handling-cors-issues-in-your-rails-api-120dfbcb8a24
+
+
+```
+application.rb
+
+config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', :headers => :any, :methods => [:get, :post, :patch, :options]
+  end
+end
+
+```
+
+After adding the Rack-Cors gems and the addition above to application.rb, CORS related issues went away.
+
+---
+
+https://dev.to/shoupn/javascript-fetch-api-and-using-asyncawait-47mp
+
+This post discusses the various ways to make an asycronous call in javascript. See the pattern that I used in https://github.com/FergusDevelopmentLLC/hiking_project_fe/blob/master/public/js/custom.js, displayTrailsByLatLng method.
+
+
+```
+displayTrailsByLatLng = async (e) => {
+  let lng = e.lngLat.lng
+  let lat = e.lngLat.lat
+  let apiUrl = `${url_prefix}/trails/${lat}/${lng}/5/15`
+
+  setSpinnerVisibilityTo('visible')
+  let mapData = await fetch(apiUrl).then(r => r.json())
+  setSpinnerVisibilityTo('hidden')
+
+  trailsArray = getTrailObjectsFrom(mapData)
+  
+  populateModalFrom(trailsArray, { "latitude": lat, "longitude": lng })
+  clearMapData(map)
+  addSource(map, getFeatureCollectionFrom(trailsArray))
+  addPointsLayer(map)
+  
+  map.flyTo({ center: [lng, lat], essential: true, zoom: 10 })
+}
+```
+
+This method is marked async, and await is used when fetching mapData.
+
+---
+https://iconify.design/
+
+A slick source of many icons for your app. I used it for the target icon and the pointer icon. Worth more investigation. They seem to have thousands of icons.
+
+https://res.cloudinary.com/fergusdev/image/upload/v1596569900/hikefinder/blog%20images/iconify_flowers.png
+
+---
+
 https://stackoverflow.com/questions/155188/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box
-https://gifyu.com/?lang=en
 https://www.npmjs.com/package/parameterize
 https://gist.github.com/pjambet/3710461
 https://stackoverflow.com/questions/456177/function-overloading-in-javascript-best-practices
@@ -343,3 +401,5 @@ https://stackoverflow.com/questions/11317662/rails-using-greater-than-less-than-
 https://passwordsgenerator.net/
 https://stackoverflow.com/questions/7759321/disable-rails-sql-logging-in-console
 https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
+https://bl.ocks.org/FergusDevelopmentLLC/4492644236d3836913bcd1339de1854b/94fee5dbffaf9bcbf15740d3c77c10c4b6f7f8b1
+https://blockbuilder.org/FergusDevelopmentLLC/4492644236d3836913bcd1339de1854b
