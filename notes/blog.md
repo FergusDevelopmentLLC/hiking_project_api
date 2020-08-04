@@ -201,36 +201,74 @@ How do I backup and restore a psql database?
 
 https://www.postgresql.org/docs/9.4/backup-dump.html
 
+How do select records from an existing table into a new one?
+https://dba.stackexchange.com/questions/2973/how-to-insert-values-into-a-table-from-a-select-query-in-postgresql
+
+How do find all records that exist in one table but not in another? This was used to find cities that do not have any cities_trails association.
+https://stackoverflow.com/questions/2686254/how-to-select-all-records-from-one-table-that-do-not-exist-in-another-table
+
 ---
+https://postgis.net/docs/ST_Centroid.html
+
+https://postgis.net/docs/ST_X.html
+
+https://postgis.net/docs/ST_Y.html
 
 https://res.cloudinary.com/fergusdev/image/upload/v1596559804/hikefinder/blog%20images/denver_centroid_bfvn0o.png
 
+The resources above are related to the PostGIS add on to Postgres. Using the geographic functions that PostGIS provides, the "center point" or centroid of a city area can be derived. The ST_Centroid finds the centroid of each place polygon, and ST_X and ST_Y return the derived latitude/longitude. In the map, the Denver, CO area boundary is outlined in blue. The red dot was the calculated centroid.
+
+Here is the sql the populates the cities table with necessary data, including the postgis functions that produce the latitude/longitude.
+
+```
+
+SELECT name, cast(null as varchar) as state, cast('United States' as varchar) as country, ST_Y(ST_Centroid(geom)) as latitude, ST_X(ST_Centroid(geom)) as longitude, cast(null as varchar) as timezone, pop2012 as population, now() as created_at, now() as update_at, st as state_abbrev
+INTO cities
+FROM populated_places_v02_raw;
+
+```
+
 ---
 
-https://postgis.net/docs/ST_Centroid.html
-https://hub.arcgis.com/datasets/esri::usa-census-populated-places
-https://stackoverflow.com/questions/18950951/cast-string-to-number-interpreting-null-or-empty-string-as-0
-https://stackoverflow.com/questions/20043231/how-to-define-the-type-int-for-a-new-field-in-sql-select-into-statement-in-ms
-https://www.postgresql.org/docs/9.1/sql-selectinto.html
-https://postgis.net/docs/ST_X.html
-https://postgis.net/docs/ST_Y.html
-https://dba.stackexchange.com/questions/2973/how-to-insert-values-into-a-table-from-a-select-query-in-postgresql
-https://stackoverflow.com/questions/2686254/how-to-select-all-records-from-one-table-that-do-not-exist-in-another-table
-https://stackoverflow.com/questions/11317662/rails-using-greater-than-less-than-with-a-where-statement
-https://guides.rubyonrails.org/active_record_querying.html
 https://stackoverflow.com/questions/2316475/how-do-i-return-early-from-a-rake-task
+
+Under some circumstances, I wanted to be able to abort the :populate_trails_for_cities task in RakeFile when something went wrong. This post explains about aborting methods.
+
+See line 78 in Rakefile for more detail.
+
+---
+
 https://www.rubyguides.com/2015/05/working-with-files-ruby/
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+I added some very basic logging to :populate_trails_for_cities in RakeFile by writing any errors to an error_log.txt file. This link explains how to work with files/folders in ruby.
+
+---
+
 https://www.rubydoc.info/github/jnunemaker/httparty/HTTParty/Response
-https://passwordsgenerator.net/
 https://support.nordvpn.com/Connectivity/Linux/1325531132/Installing-and-using-NordVPN-on-Debian-Ubuntu-Elementary-OS-and-Linux-Mint.htm
-https://www.comparitech.com/blog/vpn-privacy/hide-ip-address-free/
 http://wanip.info/
+
+The tools referenced above were investigated because I hit the rate limit for the Hiking Project API, when I was calling it for each of the 6000+ cities I have. See :populate_trails_for_cities method in the RakeFile for details. In a nutshell, the HP API started to report back that the "rate limit has been exceeded." message. I waited a day for this message to disappear. I thought that likely the error is being driven by my ip address. So, I used Nord VPN to mask/change my ip and had to rerun the script a few times to get through all 6000 cities.
+
+---
+
 https://linuxize.com/post/how-to-create-users-in-linux-using-the-useradd-command/
-https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
-https://stackoverflow.com/questions/7759321/disable-rails-sql-logging-in-console
+
+I used this because I needed a linux user in production (hiking_project_api) that matches the user that the app uses to connect to the database. This way, I can impersonate the user, hiking_project_api and have rights to make queries against the hiking_project_api database.
+
+---
+
 https://devconnected.com/how-to-undo-last-git-commit/#:~:text=The%20easiest%20way%20to%20undo,removed%20from%20your%20Git%20history.
+https://askubuntu.com/questions/409541/save-the-terminal-history-to-a-file-for-print
+
+On of the cool things you can do at the terminal is look/save commands that you have executed previously (history). It is useful to be able to look back and see the commands that you have run in the past and modify them. But, I accidentally committed this history.txt file to github instead of .gitignoring it. It has some somewhat sensitive info in it (not much, ip addressses are the worst, no passwords, I don't believe.)
+
+Anyway, when I realized I had checked in this history.txt file, I needed a way to undo my last commit. I believe this removes it completely from github.
+
+---
+
 https://medium.com/@9cv9official/what-are-get-post-put-patch-delete-a-walkthrough-with-javascripts-fetch-api-17be31755d28
+
 https://docs.mapbox.com/mapbox-gl-js/api/
 https://docs.mapbox.com/mapbox-gl-js/example/mouse-position/
 https://blockbuilder.org/FergusDevelopmentLLC/4492644236d3836913bcd1339de1854b
@@ -298,3 +336,10 @@ https://abbreviations.yourdictionary.com/articles/state-abbrev.html
 https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
 https://stackoverflow.com/questions/40511333/how-do-i-upgrade-my-activesupport-gem
 https://stackoverflow.com/questions/50102639/running-a-rails-server-in-production-locally-invalidmessage-error
+https://stackoverflow.com/questions/18950951/cast-string-to-number-interpreting-null-or-empty-string-as-0
+https://stackoverflow.com/questions/20043231/how-to-define-the-type-int-for-a-new-field-in-sql-select-into-statement-in-ms
+https://www.postgresql.org/docs/9.1/sql-selectinto.html
+https://stackoverflow.com/questions/11317662/rails-using-greater-than-less-than-with-a-where-statement
+https://passwordsgenerator.net/
+https://stackoverflow.com/questions/7759321/disable-rails-sql-logging-in-console
+https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object

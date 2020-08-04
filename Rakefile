@@ -79,8 +79,7 @@ task :populate_trails_for_cities do
   #   f.write "This is a test123"
   # }
   # abort 'Failed to proceed'
-  # https://stackoverflow.com/questions/2316475/how-do-i-return-early-from-a-rake-task
-
+  
   base_url = "http://127.0.0.1:3000"
   
   # cities = City.all
