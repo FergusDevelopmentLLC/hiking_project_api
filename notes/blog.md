@@ -151,8 +151,6 @@ Ever need some fresh lorem ipsum text? Here's a good source.
 
 ---
 
-https://www.digitalocean.com/community/tutorials/how-to-set-up-ruby-on-rails-with-postgres
-
 At this point, when I had run the script that populates the trails db by calling the Hiking Project API, I was over the row limit on Heroku for the free plan. The row limit on Heroku's free plan is 10k rows. The trails table at this point had over 30k trails.
 
 So, because I have experience with Digital Ocean, I began the process of migrating there. With Digital Ocean you get what they call a Droplet, which is basically like a little Linux computer in the cloud. You can do whatever you want with it and is a bit more robust than what you get for free with Heroku.
@@ -166,12 +164,41 @@ https://dba.stackexchange.com/questions/83164/postgresql-remove-password-require
 There were configuration that was needed so that the app could talk to the local db...
 
 https://stackoverflow.com/questions/4328679/how-to-configure-postgresql-so-it-accepts-loginpassword-auth
+
 https://www.postgresql.org/docs/8.1/user-manag.html
+
 https://chartio.com/resources/tutorials/how-to-view-which-postgres-version-is-running/
+
 https://www.postgresql.org/message-id/20000911100931.A5469@mindspring.com
 
+More digital ocean configuration directions:
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-ruby-on-rails-with-postgres
+
+https://www.digitalocean.com/community/questions/how-to-reset-the-firewall-on-ubuntu
+
+https://www.digitalocean.com/community/questions/opening-ports-on-my-server
+
+https://www.digitalocean.com/community/tutorials/how-to-use-nmap-to-scan-for-open-ports-on-your-vps
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-ruby-on-rails-with-postgres
+
+https://stackoverflow.com/questions/58065428/vanilla-rails-6-0-error-command-webpack-not-found
+
+https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
+
+https://medium.com/front-end-weekly/how-to-fixing-error-peer-authentication-failed-for-user-username-in-rails-244b93671f23
+
+https://stackoverflow.com/questions/9987171/rails-fatal-peer-authentication-failed-for-user-pgerror
+
+https://www.postgresqltutorial.com/postgresql-change-password/
+
+https://dba.stackexchange.com/questions/58312/how-to-get-the-name-of-the-current-database-from-within-postgresql
+
 ---
+
 https://rvm.io/workflow/examples
+
 https://help.learn.co/en/articles/2789231-how-to-upgrade-from-ruby-2-3-to-2-6
 
 I installed rvm (Ruby Version Manager)
@@ -269,13 +296,27 @@ Anyway, when I realized I had checked in this history.txt file, I needed a way t
 
 https://medium.com/@9cv9official/what-are-get-post-put-patch-delete-a-walkthrough-with-javascripts-fetch-api-17be31755d28
 
+https://googlechrome.github.io/samples/fetch-api/fetch-post.html
+
 This resource explains how to send a PATCH request using javascript fetch. Such a request is used when the user clicks on a trail detail. The app accumulates a click count for each trail in order to drive a "most popular trails listing" if when activity on http://hikefinder.net goes viral. :fingers_crossed
 
 ---
 
 https://docs.mapbox.com/mapbox-gl-js/api/
+
 https://docs.mapbox.com/mapbox-gl-js/example/mouse-position/
+
 https://konvajs.org/docs/styling/Mouse_Cursor.html
+
+https://stackoverflow.com/questions/47639248/using-an-array-of-longitudes-and-latitudes-to-plot-on-mapbox
+
+https://docs.mapbox.com/help/tutorials/create-interactive-hover-effects-with-mapbox-gl-js/
+
+https://stackoverflow.com/questions/36168658/mapbox-gl-setstyle-removes-layers
+
+https://gis.stackexchange.com/questions/208989/how-to-test-if-a-layer-exist-in-a-mapbox-gl-js-map
+
+https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
 
 I used the very capable Mapbox GL JS api to drive the map functionality of the app. Examples listed here helped to drive code various features of the front end.
 
@@ -329,6 +370,7 @@ displayTrailsByLatLng = async (e) => {
 This method is marked async, and await is used when fetching mapData.
 
 ---
+
 https://iconify.design/
 
 A slick source of many icons for your app. I used it for the target icon and the pointer icon. Worth more investigation. They seem to have thousands of icons.
@@ -337,69 +379,139 @@ https://res.cloudinary.com/fergusdev/image/upload/v1596569900/hikefinder/blog%20
 
 ---
 
+#UI stuff
+
+---
 https://stackoverflow.com/questions/155188/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box
+
+---
+
+#Libraries
+
+---
+
 https://www.npmjs.com/package/parameterize
+
+I just included the actualy js file from here:
+
 https://gist.github.com/pjambet/3710461
+
+----
+
 https://stackoverflow.com/questions/456177/function-overloading-in-javascript-best-practices
-https://stackoverflow.com/questions/47639248/using-an-array-of-longitudes-and-latitudes-to-plot-on-mapbox
+
+Here I pass an options object to:
+
+```
+
+line 89: populateModalFrom = (trails, opts)
+
+```
+
+https://github.com/FergusDevelopmentLLC/hiking_project_fe/blob/master/public/js/custom.js
+
+---
+
 https://codepen.io/AshutoshD/pen/dMEGqM
-https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
-https://docs.mapbox.com/help/tutorials/create-interactive-hover-effects-with-mapbox-gl-js/
-https://tarekraafat.github.io/autoComplete.js/demo/
-https://www.digitalocean.com/community/tutorials/how-to-set-up-ruby-on-rails-with-postgres
-https://www.digitalocean.com/community/tutorials/how-to-set-up-ruby-on-rails-with-postgres
-https://stackoverflow.com/questions/58065428/vanilla-rails-6-0-error-command-webpack-not-found
-https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
-https://medium.com/front-end-weekly/how-to-fixing-error-peer-authentication-failed-for-user-username-in-rails-244b93671f23
-https://mirrors.tripadvisor.com/centos-vault/3.5/docs/html/rhel-sbs-en-3/s1-navigating-pwd.html#:~:text=To%20determine%20the%20exact%20location,
-and%20type%20the%20command%20pwd.&text=When%20you%20typed%20pwd%2C%20you,in%20the%20shell%20prompt%20window.
+
+This the source for the loading spinner functionality.
+
+---
+
 https://stackoverflow.com/questions/2748607/how-to-thoroughly-purge-and-reinstall-postgresql-on-ubuntu
-https://stackoverflow.com/questions/9987171/rails-fatal-peer-authentication-failed-for-user-pgerror
+
+I had to start over at one point, reinstall the db from scratch.
+
+---
+
 https://stackoverflow.com/questions/32519062/how-to-start-a-rails-server-forever-on-ubuntu/32523742
-https://prathamesh.tech/2019/08/26/understanding-webpacker-in-rails-6/
-https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
+
+Nice way to run a rails server in the background:
+
+```
+rails s -d ## With default Port.
+rails s -p 8888 -d ## With Custom port.
+```
+---
+
 https://passwordsgenerator.net/
-https://www.postgresqltutorial.com/postgresql-change-password/
-https://dba.stackexchange.com/questions/58312/how-to-get-the-name-of-the-current-database-from-within-postgresql
-https://www.digitalocean.com/community/questions/how-to-reset-the-firewall-on-ubuntu
-https://www.digitalocean.com/community/questions/opening-ports-on-my-server
-https://www.digitalocean.com/community/tutorials/how-to-use-nmap-to-scan-for-open-ports-on-your-vps
-https://futurestud.io/tutorials/remove-all-whitespace-from-a-string-in-javascript
+
+Nice site for generating random/secure passwords.
+
+---
+
 http://htmlshell.com/
+
+Just need a quick HTML skeleton? Here ya go.
+
+---
+
 http://compass-style.org/reference/compass/css3/
-https://dev.to/stephenafamo/how-to-create-an-autocomplete-input-with-plain-javascript
+
+Compass is an open-source CSS Authoring Framework. I did not use it in this project but looked interesting enough to check out.
+
+---
+
 http://jsfiddle.net/rockyjreed/8GcSF/
-https://www.w3schools.com/jsref/jsref_startswith.asp
-https://stackoverflow.com/questions/1789945/how-to-check-whether-a-string-contains-a-substring-in-javascript
-https://www.digitalocean.com/community/questions/problem-502-bad-gateway-nginx-1-10-3-ubuntu
-https://askubuntu.com/questions/409541/save-the-terminal-history-to-a-file-for-print
-https://stackoverflow.com/questions/36168658/mapbox-gl-setstyle-removes-layers
-https://bl.ocks.org/tristen/0c0ed34e210a04e89984
-https://gis.stackexchange.com/questions/208989/how-to-test-if-a-layer-exist-in-a-mapbox-gl-js-map
-https://docs.mapbox.com/mapbox-gl-js/example/setstyle/
-https://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
-https://docs.mapbox.com/mapbox-gl-js/example/popup-on-click/
-https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
-https://stackoverflow.com/questions/15769739/determining-type-of-an-object-in-ruby
-https://apidock.com/rails/v4.0.2/ActiveRecord/Relation/find_or_create_by
-https://googlechrome.github.io/samples/fetch-api/fetch-post.html
-https://stackoverflow.com/questions/24565589/can-i-pass-default-value-to-rails-generate-migration
+
+This is the autocomplete that the City, State one uses.
+
+---
+
+#Miscellaneous
 
 https://devcenter.heroku.com/articles/renaming-apps#updating-git-remotes
+
 https://postgis.net/docs/AddGeometryColumn.html
+
 https://stackoverflow.com/questions/34727605/heroku-cannot-run-more-than-1-free-size-dynos
+
 https://apidock.com/rails/ActiveRecord/QueryMethods/where
+
 https://stackoverflow.com/questions/2220423/case-insensitive-search-in-rails-model
+
 https://abbreviations.yourdictionary.com/articles/state-abbrev.html
+
 https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
+
 https://stackoverflow.com/questions/40511333/how-do-i-upgrade-my-activesupport-gem
+
 https://stackoverflow.com/questions/50102639/running-a-rails-server-in-production-locally-invalidmessage-error
+
 https://stackoverflow.com/questions/18950951/cast-string-to-number-interpreting-null-or-empty-string-as-0
+
 https://stackoverflow.com/questions/20043231/how-to-define-the-type-int-for-a-new-field-in-sql-select-into-statement-in-ms
+
 https://www.postgresql.org/docs/9.1/sql-selectinto.html
+
 https://stackoverflow.com/questions/11317662/rails-using-greater-than-less-than-with-a-where-statement
-https://passwordsgenerator.net/
+
 https://stackoverflow.com/questions/7759321/disable-rails-sql-logging-in-console
+
 https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
+
 https://bl.ocks.org/FergusDevelopmentLLC/4492644236d3836913bcd1339de1854b/94fee5dbffaf9bcbf15740d3c77c10c4b6f7f8b1
+
 https://blockbuilder.org/FergusDevelopmentLLC/4492644236d3836913bcd1339de1854b
+
+https://stackoverflow.com/questions/684672/how-do-i-loop-through-or-enumerate-a-javascript-object
+
+https://tarekraafat.github.io/autoComplete.js/demo/
+
+https://futurestud.io/tutorials/remove-all-whitespace-from-a-string-in-javascript
+
+https://www.digitalocean.com/community/questions/problem-502-bad-gateway-nginx-1-10-3-ubuntu
+
+https://stackoverflow.com/questions/4816099/chrome-sendrequest-error-typeerror-converting-circular-structure-to-json
+
+https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
+
+https://stackoverflow.com/questions/15769739/determining-type-of-an-object-in-ruby
+
+https://stackoverflow.com/questions/24565589/can-i-pass-default-value-to-rails-generate-migration
+
+https://prathamesh.tech/2019/08/26/understanding-webpacker-in-rails-6/
+
+https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
+
+---
