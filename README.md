@@ -1,31 +1,26 @@
-# hiking_project_api
+# Hikefinder.net (Back end api)
 
-This is the backend to this front end:
+Find hiking trails anywhere in the USA. Live demo: http://hikefinder.net
+
+## Installation
+
+
+## Front end Repository
 
 https://github.com/FergusDevelopmentLLC/hiking_project_fe
 
-Live site:
 
-http://hikefinder.net/
+## Live demo
 
-TODO: 
+http://hikefinder.net
 
-Things you may want to cover:
+## Contributing Bugfixes or Features
 
-* Ruby version
+* Fork the this repository
+* Create a local development branch for the bugfix; I recommend naming the branch such that you'll recognize its purpose.
+* Commit a change, and push your local branch to your github fork
+* Send me pull request for your changes to be included
 
-* System dependencies
+## License
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Hikefinder is licensed under the MIT license. (http://opensource.org/licenses/MIT)
