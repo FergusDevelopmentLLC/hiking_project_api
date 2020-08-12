@@ -5,7 +5,7 @@ Find hiking trails anywhere in the USA. Live demo: http://hikefinder.net
 ## Installation
 
 
-## Front end Repository
+## Front end repository
 
 https://github.com/FergusDevelopmentLLC/hiking_project_fe
 
