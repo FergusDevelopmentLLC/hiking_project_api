@@ -12,17 +12,17 @@ task :make_seeds do
   
   seedfile = File.open('db/seeds_new.rb', 'a')
   
-  cities = City.all
+  cities = City.limit(1000).order(:id)
   cities.each do |city|
     seedfile.write "City.create(#{city.attributes})\n"
   end
 
-  trails = Trail.all
+  trails = Trail.limit(1000).order(:id)
   trails.each do |trail|
     seedfile.write "Trail.create(#{trail.attributes})\n"
   end
 
-  cities_trails = CitiesTrail.all
+  cities_trails = CitiesTrail.limit(1000).order(:id)
   cities_trails.each do |ct|
     seedfile.write "CitiesTrail.create(#{ct.attributes})\n"
   end
@@ -68,7 +68,7 @@ task :make_seeds do
   
   File.open('db/seeds_new.rb', "w") { |file| file.puts new_contents }
 
-  #https://stackoverflow.com/questions/27431532/why-am-i-getting-uninitialized-constant-for-a-rake-task-rails-4-1-8
+  #RAILS_ENV=development bundle exec rake environment make_seeds
 
 end
 
@@ -189,8 +189,6 @@ task :populate_db do
   f.each_line { |line|
     puts "Executing:" + line
     eval(line)
-    #puts "sleeping 5 secs"
-    #sleep 15
   }
   f.close
 

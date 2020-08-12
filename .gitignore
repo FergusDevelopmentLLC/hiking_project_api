@@ -36,9 +36,6 @@ notes.txt
 /db/migrate/save/*
 /db/migrate/old/*
 
-/db/seeds.rb
-
-seeds.rb
 /public/packs
 /public/packs-test
 /node_modules
