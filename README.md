@@ -29,9 +29,11 @@ Run:
 ```
 $ cd hiking_project_api
 $ bundle install
-$ rake db:migrate 
-$ rake db:seed
-$ rails s
+$ RAILS_ENV=development bundle exec rake db:migrate 
+$ RAILS_ENV=development bundle exec rake db:seed
+$ RAILS_ENV=development bundle exec rake environment populate_city_slugs
+$ RAILS_ENV=development bundle exec rake environment populate_distance
+$ RAILS_ENV=development rails s
 ```
 
 Note, the seeds.rb file only contains subset of actual data.
