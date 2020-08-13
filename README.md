@@ -44,6 +44,9 @@ This back end drives the following front end:
 
 https://github.com/FergusDevelopmentLLC/hiking_project_fe
 
+## Deliverables
+
+Here is a list of project deliverables for the back end and front end (specific line numbers are referenced for each deliverable) https://github.com/FergusDevelopmentLLC/hiking_project_api/blob/master/deliverables.md
 
 ## Live demo
 
