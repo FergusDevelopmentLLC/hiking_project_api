@@ -698,3 +698,12 @@ https://stackoverflow.com/questions/24565589/can-i-pass-default-value-to-rails-g
 https://prathamesh.tech/2019/08/26/understanding-webpacker-in-rails-6/
 https://www.reddit.com/r/rails/comments/71by4m/help_the_asset_applicationcss_is_not_present_in/
 - -
+
+This error appeared more than a few times as I was working through the population of the cities, trails and citiestrails tables.
+PG::UniqueViolation: ERROR: duplicate key value violates unique constraint?
+Somehow the primary key information for the table would get out of wack. My fix was to go to open the rails console and execute:
+
+ActiveRecord::Base.connection.tables.each do |table_name|
+  ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
+end
+This resets all the primary keys in your tables.
