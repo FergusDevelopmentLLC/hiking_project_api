@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :cities_trails
 
   get 'cities/:slug/:state_abbrev', to: 'cities#show'
-  resources :cities
+  resources :cities do
+    resources :trails
+  end
 
   get 'cities/:slug/:state_abbrev/trails', to: 'trails#for_city'
   resources :trails

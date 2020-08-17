@@ -10,7 +10,8 @@ class CitiesController < ApplicationController
 
   # GET /cities/1
   def show
-    render json: @city
+    #render the city with the associated trails
+    render :json => @city.to_json(include: [:trails])
   end
 
   # POST /cities
