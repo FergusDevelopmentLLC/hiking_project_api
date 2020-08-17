@@ -9,7 +9,9 @@ class TrailsController < ApplicationController
 
   # GET /trails/1
   def show
-    render json: @trail
+    # render json: @trail
+    #render the trail with the associated cities
+    render :json => @trail.to_json(include: [:cities])
   end
 
   # POST /trails
