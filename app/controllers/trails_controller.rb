@@ -3,7 +3,14 @@ class TrailsController < ApplicationController
 
   # GET /trails
   def index
-    @trails = Trail.all
+    @trails = null
+    if params[:city_id]
+      city = City.find_by(id: params[:city_id])
+      @trails = city.trails
+    else
+      #limit display of all trails to 100
+      @trails = Trail.all.limit(100).order("id asc")
+    end
     render json: @trails
   end
 
@@ -39,30 +46,12 @@ class TrailsController < ApplicationController
     @trail.destroy
   end
 
-  def for_city#TODO: shouldnt this be cities/1/trails
+  def for_cityslug_state
     
-    @trails = []
-
     city = City.where(["lower(slug) = ? and lower(state_abbrev) = ?", params[:slug], params[:state_abbrev]]).first
 
-    if city
-      
-      city_trails = if params[:limit]
-                      CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc }).limit(params[:limit].to_i)
-                    else
-                      CitiesTrail.where('city_id = ?', city.id).order({ distance: :asc })
-                    end
+    @trails = city.trails if city
     
-      city_trails.each {|city_trail|
-        trail = Trail.find_by(id: city_trail.trail_id)
-        if trail
-          trail_hash = trail.attributes
-          @trails.push(trail_hash)
-        end
-      }
-
-    end
-
     render json: @trails
   end
 

@@ -4,7 +4,18 @@ class CitiesController < ApplicationController
   # GET /cities
   def index
     @cities = City.all
+    render json: @cities
+  end
 
+  def index
+    @cities = null
+    if params[:trail_id]
+      trail = Trail.find_by(id: params[:trail_id])
+      @cities = trail.cities
+    else
+      #limit display of all cities to 100
+      @cities = City.all.limit(100).order("id asc")
+    end
     render json: @cities
   end
 
