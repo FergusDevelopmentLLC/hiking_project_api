@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   resources :cities_trails
 
-  #get 'cities/:slug/:state_abbrev', to: 'cities#show'
   resources :cities do
     resources :trails
   end
