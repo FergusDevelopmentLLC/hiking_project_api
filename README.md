@@ -48,6 +48,19 @@ https://github.com/FergusDevelopmentLLC/hiking_project_fe
 
 Here is a list of project deliverables for the back end and front end (specific line numbers are referenced for each deliverable) https://github.com/FergusDevelopmentLLC/hiking_project_api/blob/master/deliverables.md
 
+## Blog post
+
+Here is a blog post that details many of hurdles encountered when building Hikefinder:  
+https://medium.com/@will.carter/reviving-old-ideas-2f2908189a34
+
+## Video walkthrough
+
+https://www.youtube.com/watch?v=2fK7-zI9Kzc
+
+## Code sample video
+
+https://www.youtube.com/watch?v=C-d2N8V-Zps
+
 ## Live demo
 
 http://hikefinder.net
