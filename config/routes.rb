@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get '/', to: 'application#welcome' 
+
   get '/hiking_project', to: redirect('/map/index.html')
 
   resources :cities_trails
@@ -20,5 +22,7 @@ Rails.application.routes.draw do
     :max_distance => /[^\/]+/,
     :max_results => /[^\/]+/,
   }
+
+
 
 end
