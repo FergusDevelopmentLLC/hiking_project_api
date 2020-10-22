@@ -58,6 +58,8 @@ class TrailsController < ApplicationController
   def for_coords
 
     raw_trails = Scraper.get_trails_from_api(latitude: params[:latitude], longitude: params[:longitude], max_distance: params[:max_distance], max_results: params[:max_results])
+    puts "raw_trails"
+    puts raw_trails
     
     @trails = []
     
@@ -70,6 +72,9 @@ class TrailsController < ApplicationController
       @trails.push(t)
     end
     
+    puts "@trails"
+    puts trails
+
     render json: @trails
   end
 
