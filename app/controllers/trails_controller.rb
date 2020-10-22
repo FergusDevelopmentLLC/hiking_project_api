@@ -65,10 +65,23 @@ class TrailsController < ApplicationController
     
     #save each trail to the local db
     raw_trails.each do |trail|
+      
+      puts "trail"
+      puts trail
+
       t = Trail.find_or_create_by(hiking_project_id: trail[:hiking_project_id])
+      puts "t"
+      puts t
+
       # https://stackoverflow.com/questions/3669801/dry-way-to-assign-hash-values-to-an-object
       t.assign_attributes(trail)
+      puts "t"
+      puts t
+
       t.save()
+      puts "t"
+      puts t
+      
       @trails.push(t)
     end
     
