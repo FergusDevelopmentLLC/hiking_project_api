@@ -4,11 +4,19 @@ class Scraper
         
       url = "https://www.hikingproject.com/data/get-trails?lat=#{latitude}&lon=#{longitude}&maxDistance=#{max_distance}&maxResults=#{max_results}&key=#{ENV['HIKINGPROJECT_API_KEY']}"
       
-      puts url
+      #puts url
 
       uri = URI(url)
+      puts "uri"
+      puts uri
+
       response = Net::HTTP.get(uri)
+      puts "response"
+      puts response
+
       api_response_raw = JSON.parse(response)
+      puts "api_response_raw['trails']"
+      puts api_response_raw["trails"]
 
       if api_response_raw["trails"] == nil
         raise "An error has occured. response message: #{response}"
